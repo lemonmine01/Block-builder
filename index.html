@@ -17,13 +17,18 @@
         }
         h1 { color: white; margin-bottom: 15px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
         
-        .controls {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px 15px;
-            border-radius: 12px;
+        .toolbar {
+            display: flex;
+            gap: 15px;
+            align-items: flex-start;
             margin-bottom: 15px;
+        }
+        
+        .color-panel {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px;
+            border-radius: 12px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            max-width: 95vw;
         }
         .color-picker {
             display: flex;
@@ -47,6 +52,70 @@
             transform: scale(1.1);
         }
         
+        .shape-panel {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 12px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            align-items: center;
+        }
+        .shape-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #333;
+        }
+        .shape-btn {
+            width: 50px;
+            height: 50px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .shape-btn:hover { transform: scale(1.1); background: #f0f0f0; }
+        .shape-btn.active {
+            border-color: #333;
+            box-shadow: 0 0 0 2px white, 0 0 0 4px #333;
+            transform: scale(1.1);
+        }
+        .shape-preview {
+            width: 32px;
+            height: 32px;
+            background: #ff0000;
+        }
+        .shape-sq { border-radius: 8px; }
+        .shape-circle { border-radius: 50%; }
+        .shape-tri {
+            width: 0;
+            height: 0;
+            border-left: 16px solid transparent;
+            border-right: 16px solid transparent;
+            border-bottom: 32px solid #ff0000;
+            border-radius: 4px;
+            background: transparent !important;
+        }
+        
+        .clear-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+        .clear-btn:hover { background: #ff5252; }
+        
         #grid {
             display: grid;
             grid-template-columns: repeat(30, 35px);
@@ -68,18 +137,6 @@
         }
         .cell:hover { opacity: 0.85; }
         
-        .clear-btn {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            font-size: 13px;
-            font-weight: bold;
-            padding: 0 10px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .clear-btn:hover { background: #ff5252; }
-        
         .instructions {
             color: white;
             margin-top: 15px;
@@ -93,41 +150,60 @@
 </head>
 <body>
     <h1>🎮 Block Builder</h1>
-    <div class="controls">
-        <div class="color-picker">
-            <span style="font-weight: bold; margin-right: 5px;">🎨:</span>
-            <button class="color-btn active" style="background: #ff0000;" data-color="#ff0000"></button>
-            <button class="color-btn" style="background: #ff4a00;" data-color="#ff4a00"></button>
-            <button class="color-btn" style="background: #ff6300;" data-color="#ff6300"></button>
-            <button class="color-btn" style="background: #ff8800;" data-color="#ff8800"></button>
-            <button class="color-btn" style="background: #ffad00;" data-color="#ffad00"></button>
-            <button class="color-btn" style="background: #ffde00;" data-color="#ffde00"></button>
-            <button class="color-btn" style="background: #d6ff00;" data-color="#d6ff00"></button>
-            <button class="color-btn" style="background: #a5ff00;" data-color="#a5ff00"></button>
-            <button class="color-btn" style="background: #42ff00;" data-color="#42ff00"></button>
-            <button class="color-btn" style="background: #00ff84;" data-color="#00ff84"></button>
-            <button class="color-btn" style="background: #00ffe6;" data-color="#00ffe6"></button>
-            <button class="color-btn" style="background: #00c1ff;" data-color="#00c1ff"></button>
-            <button class="color-btn" style="background: #0016ff;" data-color="#0016ff"></button>
-            <button class="color-btn" style="background: #5a00ff;" data-color="#5a00ff"></button>
-            <button class="color-btn" style="background: #8a00ff;" data-color="#8a00ff"></button>
-            <button class="color-btn" style="background: #e100ff;" data-color="#e100ff"></button>
-            <button class="color-btn" style="background: #ff00ec;" data-color="#ff00ec"></button>
-            <button class="color-btn" style="background: #ff0095;" data-color="#ff0095"></button>
-            <button class="color-btn" style="background: #ffffff;" data-color="#ffffff"></button>
-            <button class="color-btn" style="background: #bfbfbf;" data-color="#bfbfbf"></button>
-            <button class="color-btn" style="background: #808080;" data-color="#808080"></button>
-            <button class="color-btn" style="background: #404040;" data-color="#404040"></button>
-            <button class="color-btn" style="background: #000000;" data-color="#000000"></button>
-            <button class="color-btn clear-btn" onclick="clearGrid()">🗑️</button>
+    
+    <div class="toolbar">
+        <!-- Кольори -->
+        <div class="color-panel">
+            <div class="color-picker">
+                <span style="font-weight: bold; margin-right: 5px;">🎨:</span>
+                <button class="color-btn active" style="background: #ff0000;" data-color="#ff0000"></button>
+                <button class="color-btn" style="background: #ff4a00;" data-color="#ff4a00"></button>
+                <button class="color-btn" style="background: #ff6300;" data-color="#ff6300"></button>
+                <button class="color-btn" style="background: #ff8800;" data-color="#ff8800"></button>
+                <button class="color-btn" style="background: #ffad00;" data-color="#ffad00"></button>
+                <button class="color-btn" style="background: #ffde00;" data-color="#ffde00"></button>
+                <button class="color-btn" style="background: #d6ff00;" data-color="#d6ff00"></button>
+                <button class="color-btn" style="background: #a5ff00;" data-color="#a5ff00"></button>
+                <button class="color-btn" style="background: #42ff00;" data-color="#42ff00"></button>
+                <button class="color-btn" style="background: #00ff84;" data-color="#00ff84"></button>
+                <button class="color-btn" style="background: #00ffe6;" data-color="#00ffe6"></button>
+                <button class="color-btn" style="background: #00c1ff;" data-color="#00c1ff"></button>
+                <button class="color-btn" style="background: #0016ff;" data-color="#0016ff"></button>
+                <button class="color-btn" style="background: #5a00ff;" data-color="#5a00ff"></button>
+                <button class="color-btn" style="background: #8a00ff;" data-color="#8a00ff"></button>
+                <button class="color-btn" style="background: #e100ff;" data-color="#e100ff"></button>
+                <button class="color-btn" style="background: #ff00ec;" data-color="#ff00ec"></button>
+                <button class="color-btn" style="background: #ff0095;" data-color="#ff0095"></button>
+                <button class="color-btn" style="background: #ffffff;" data-color="#ffffff"></button>
+                <button class="color-btn" style="background: #bfbfbf;" data-color="#bfbfbf"></button>
+                <button class="color-btn" style="background: #808080;" data-color="#808080"></button>
+                <button class="color-btn" style="background: #404040;" data-color="#404040"></button>
+                <button class="color-btn" style="background: #000000;" data-color="#000000"></button>
+                <button class="clear-btn" onclick="clearGrid()">🗑️</button>
+            </div>
+        </div>
+
+        <!-- Фігури (вертикальна панель) -->
+        <div class="shape-panel">
+            <div class="shape-title">🔷 Фігура</div>
+            <button class="shape-btn active" data-shape="square" title="Закруглений квадрат">
+                <div class="shape-preview shape-sq"></div>
+            </button>
+            <button class="shape-btn" data-shape="circle" title="Круг">
+                <div class="shape-preview shape-circle"></div>
+            </button>
+            <button class="shape-btn" data-shape="triangle" title="Закруглений трикутник">
+                <div class="shape-preview shape-tri"></div>
+            </button>
         </div>
     </div>
 
     <div id="grid"></div>
-    <div class="instructions">🖱️ Затисни ліву кнопку миші та веди для малювання | 🎨 Обери колір зверху</div>
+    <div class="instructions">🖱️ Затисни ліву кнопку миші та веди для малювання | 🎨 Колір + 🔷 Фігура</div>
 
     <script>
         let selectedColor = '#ff0000';
+        let selectedShape = 'square';
         let isDrawing = false;
         const grid = document.getElementById('grid');
         const cols = 30, rows = 22;
@@ -135,33 +211,74 @@
         for (let i = 0; i < cols * rows; i++) {
             const cell = document.createElement('div');
             cell.className = 'cell';
+            cell.dataset.index = i;
             cell.addEventListener('mousedown', (e) => { 
                 isDrawing = true; 
-                placeBlock(cell); 
+                paintCell(cell); 
             });
             cell.addEventListener('mouseenter', () => { 
-                if (isDrawing) placeBlock(cell); 
+                if (isDrawing) paintCell(cell); 
             });
             grid.appendChild(cell);
         }
 
         document.addEventListener('mouseup', () => isDrawing = false);
 
+        // Кольори
         document.querySelectorAll('.color-btn[data-color]').forEach(btn => {
             btn.addEventListener('click', function() {
                 document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 selectedColor = this.dataset.color;
+                updateShapePreviews();
             });
         });
 
-        function placeBlock(cell) {
+        // Фігури
+        document.querySelectorAll('.shape-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedShape = this.dataset.shape;
+                applyShapesToGrid();
+            });
+        });
+
+        function paintCell(cell) {
             cell.style.background = selectedColor;
+            cell.className = 'cell'; // скидаємо класи
+            if (selectedShape === 'square') cell.classList.add('shape-sq');
+            else if (selectedShape === 'circle') cell.classList.add('shape-circle');
+            else if (selectedShape === 'triangle') cell.classList.add('shape-tri');
+        }
+
+        function applyShapesToGrid() {
+            document.querySelectorAll('.cell').forEach(cell => {
+                if (cell.style.background && cell.style.background !== '#E0F7FA') {
+                    cell.className = 'cell';
+                    if (selectedShape === 'square') cell.classList.add('shape-sq');
+                    else if (selectedShape === 'circle') cell.classList.add('shape-circle');
+                    else if (selectedShape === 'triangle') cell.classList.add('shape-tri');
+                }
+            });
+        }
+
+        function updateShapePreviews() {
+            document.querySelectorAll('.shape-preview').forEach(preview => {
+                if (!preview.classList.contains('shape-tri')) {
+                    preview.style.background = selectedColor;
+                } else {
+                    preview.style.borderBottomColor = selectedColor;
+                }
+            });
         }
 
         function clearGrid() {
             if (confirm('Очистити все поле?')) {
-                document.querySelectorAll('.cell').forEach(cell => cell.style.background = '#E0F7FA');
+                document.querySelectorAll('.cell').forEach(cell => {
+                    cell.style.background = '#E0F7FA';
+                    cell.className = 'cell';
+                });
             }
         }
     </script>

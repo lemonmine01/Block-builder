@@ -56,18 +56,20 @@
 
         #grid {
             display: grid;
-            grid-template-columns: repeat(20, 30px);
-            grid-template-rows: repeat(15, 30px);
+            grid-template-columns: repeat(30, 35px); /* Збільшено: було 20 */
+            grid-template-rows: repeat(22, 35px);    /* Збільшено: було 15 */
             gap: 2px;
             background: #87CEEB;
             padding: 10px;
             border-radius: 12px;
             box-shadow: 0 8px 16px rgba(0,100,200,0.25);
+            max-width: 95vw;
+            overflow: auto; /* Прокрутка, якщо екран малий */
         }
 
         .cell {
-            width: 30px;
-            height: 30px;
+            width: 35px;
+            height: 35px;
             background: #E0F7FA;
             border: 1px solid #B2EBF2;
             cursor: pointer;
@@ -124,7 +126,9 @@
         let selectedColor = '#000000';
 
         const grid = document.getElementById('grid');
-        const gridSize = 20 * 15;
+        const cols = 30;
+        const rows = 22;
+        const gridSize = cols * rows; // 660 клітинок
 
         for (let i = 0; i < gridSize; i++) {
             const cell = document.createElement('div');

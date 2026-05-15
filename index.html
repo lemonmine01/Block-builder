@@ -87,34 +87,22 @@
             transform: scale(1.1);
         }
         .shape-preview {
-            width: 32px;
-            height: 32px;
-            background: #ff0000;
+            width: 30px;
+            height: 30px;
         }
-        .shape-sq { border-radius: 8px; }
-        .shape-circle { border-radius: 50%; }
+        .shape-sq { 
+            border-radius: 6px;
+        }
+        .shape-circle { 
+            border-radius: 50%; 
+        }
         .shape-tri {
             width: 0;
             height: 0;
-            border-left: 16px solid transparent;
-            border-right: 16px solid transparent;
-            border-bottom: 32px solid #ff0000;
-            border-radius: 4px;
-            background: transparent !important;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-bottom: 30px solid;
         }
-        
-        .clear-btn {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            font-size: 13px;
-            font-weight: bold;
-            padding: 6px 10px;
-            border-radius: 6px;
-            cursor: pointer;
-            margin-top: 4px;
-        }
-        .clear-btn:hover { background: #ff5252; }
         
         #grid {
             display: grid;
@@ -132,10 +120,35 @@
             width: 35px;
             height: 35px;
             background: #E0F7FA;
-            border: 1px solid #B2EBF2;
             cursor: pointer;
+            transition: none;
         }
         .cell:hover { opacity: 0.85; }
+        
+        /* Форми блоків */
+        .cell.square { border-radius: 4px; }
+        .cell.circle { border-radius: 50%; }
+        .cell.triangle {
+            width: 0;
+            height: 0;
+            border-left: 17px solid transparent;
+            border-right: 17px solid transparent;
+            border-bottom: 35px solid;
+            background: transparent !important;
+        }
+        
+        .clear-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 6px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 4px;
+        }
+        .clear-btn:hover { background: #ff5252; }
         
         .instructions {
             color: white;
@@ -187,13 +200,13 @@
         <div class="shape-panel">
             <div class="shape-title">🔷 Фігура</div>
             <button class="shape-btn active" data-shape="square" title="Закруглений квадрат">
-                <div class="shape-preview shape-sq"></div>
+                <div class="shape-preview shape-sq" style="background: #ff0000;"></div>
             </button>
             <button class="shape-btn" data-shape="circle" title="Круг">
-                <div class="shape-preview shape-circle"></div>
+                <div class="shape-preview shape-circle" style="background: #ff0000;"></div>
             </button>
             <button class="shape-btn" data-shape="triangle" title="Закруглений трикутник">
-                <div class="shape-preview shape-tri"></div>
+                <div class="shape-preview shape-tri" style="border-bottom-color: #ff0000;"></div>
             </button>
         </div>
     </div>
@@ -210,7 +223,7 @@
 
         for (let i = 0; i < cols * rows; i++) {
             const cell = document.createElement('div');
-            cell.className = 'cell';
+            cell.className = 'cell square';
             cell.dataset.index = i;
             cell.addEventListener('mousedown', (e) => { 
                 isDrawing = true; 
@@ -240,35 +253,32 @@
                 document.querySelectorAll('.shape-btn').forEach(b => b.classList.remove('active'));
                 this.classList.add('active');
                 selectedShape = this.dataset.shape;
-                applyShapesToGrid();
             });
         });
 
         function paintCell(cell) {
-            cell.style.background = selectedColor;
-            cell.className = 'cell'; // скидаємо класи
-            if (selectedShape === 'square') cell.classList.add('shape-sq');
-            else if (selectedShape === 'circle') cell.classList.add('shape-circle');
-            else if (selectedShape === 'triangle') cell.classList.add('shape-tri');
-        }
-
-        function applyShapesToGrid() {
-            document.querySelectorAll('.cell').forEach(cell => {
-                if (cell.style.background && cell.style.background !== '#E0F7FA') {
-                    cell.className = 'cell';
-                    if (selectedShape === 'square') cell.classList.add('shape-sq');
-                    else if (selectedShape === 'circle') cell.classList.add('shape-circle');
-                    else if (selectedShape === 'triangle') cell.classList.add('shape-tri');
-                }
-            });
+            // Зберігаємо форму, яку намалювали
+            cell.className = 'cell ' + selectedShape;
+            
+            if (selectedShape === 'triangle') {
+                cell.style.background = 'transparent';
+                cell.style.borderLeft = '17px solid transparent';
+                cell.style.borderRight = '17px solid transparent';
+                cell.style.borderBottom = '35px solid ' + selectedColor;
+            } else {
+                cell.style.background = selectedColor;
+                cell.style.borderLeft = '';
+                cell.style.borderRight = '';
+                cell.style.borderBottom = '';
+            }
         }
 
         function updateShapePreviews() {
             document.querySelectorAll('.shape-preview').forEach(preview => {
-                if (!preview.classList.contains('shape-tri')) {
-                    preview.style.background = selectedColor;
-                } else {
+                if (preview.classList.contains('shape-tri')) {
                     preview.style.borderBottomColor = selectedColor;
+                } else {
+                    preview.style.background = selectedColor;
                 }
             });
         }
@@ -276,8 +286,11 @@
         function clearGrid() {
             if (confirm('Очистити все поле?')) {
                 document.querySelectorAll('.cell').forEach(cell => {
+                    cell.className = 'cell square';
                     cell.style.background = '#E0F7FA';
-                    cell.className = 'cell';
+                    cell.style.borderLeft = '';
+                    cell.style.borderRight = '';
+                    cell.style.borderBottom = '';
                 });
             }
         }

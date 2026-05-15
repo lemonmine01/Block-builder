@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Builder</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 {
+            color: white;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .controls {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .color-picker {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border: 3px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .color-btn.active {
+            border-color: #333;
+        }
+
+        #grid {
+            display: grid;
+            grid-template-columns: repeat(20, 30px);
+            grid-template-rows: repeat(15, 30px);
+            gap: 2px;
+            background: #87CEEB;
+            padding: 10px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,100,200,0.25);
+        }
+
+        .cell {
+            width: 30px;
+            height: 30px;
+            background: #E0F7FA;
+            border: 1px solid #B2EBF2;
+            cursor: pointer;
+        }
+
+        .cell:hover {
+            opacity: 0.8;
+        }
+
+        .instructions {
+            color: white;
+            margin-top: 20px;
+            text-align: center;
+            background: rgba(255,255,255,0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        button.clear-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 Block Builder</h1>
+    
+    <div class="controls">
+        <div class="color-picker">
+            <span style="font-weight: bold;">Колір:</span>
+            <button class="color-btn active" data-color="#000000" style="background: #000;"></button>
+            <button class="color-btn" data-color="#FFFFFF" style="background: #FFF;"></button>
+            <button class="color-btn" data-color="#808080" style="background: #888;"></button>
+            <button class="color-btn" data-color="#FF0000" style="background: #F00;"></button>
+            <button class="color-btn" data-color="#00FF00" style="background: #0F0;"></button>
+            <button class="color-btn" data-color="#0000FF" style="background: #00F;"></button>
+            <button class="color-btn" data-color="#FFFF00" style="background: #FF0;"></button>
+            <button onclick="clearGrid()" class="clear-btn">🗑️ Очистити</button>
+        </div>
+    </div>
+
+    <div id="grid"></div>
+
+    <div class="instructions">
+        <p>🖱️ Клікни по клітинці, щоб поставити блок | 🎨 Обери колір зверху</p>
+    </div>
+
+    <script>
+        let selectedColor = '#000000';
+
+        const grid = document.getElementById('grid');
+        const gridSize = 20 * 15;
+
+        for (let i = 0; i < gridSize; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'cell';
+            cell.addEventListener('click', () => {
+                cell.style.background = selectedColor;
+            });
+            grid.appendChild(cell);
+        }
+
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.dataset.color) {
+                    document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedColor = this.dataset.color;
+                }
+            });
+        });
+
+        function clearGrid() {
+            if (confirm('Очистити все поле?')) {
+                document.querySelectorAll('.cell').forEach(cell => {
+                    cell.style.background = '#E0F7FA';
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -91,7 +91,13 @@
         }
         .color-btn:hover::after { opacity: 1; }
 
-        .shape-panel {
+        /* Панелі інструментів та фігур */
+        .panels-group {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .shape-panel, .tools-panel {
             background: rgba(255, 255, 255, 0.95);
             padding: 8px;
             border-radius: 12px;
@@ -101,26 +107,32 @@
             gap: 6px;
             align-items: center;
         }
-        .shape-btn {
+        
+        .btn-icon {
             width: 40px; height: 40px;
             border: 2px solid rgba(0,0,0,0.1);
             border-radius: 8px;
             background: white;
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
+            font-size: 20px;
             user-select: none;
+            transition: all 0.15s;
         }
-        .shape-btn.active {
+        .btn-icon:hover { background: #f0f0f0; transform: scale(1.1); }
+        .btn-icon.active {
             border-color: #333;
             box-shadow: 0 0 0 2px white, 0 0 0 4px #333;
+            background: #e0e0e0;
         }
-        .preview-shape { width: 20px; height: 20px; background: #ff0000; }
+        
+        .preview-shape { width: 20px; height: 20px; background: #ff4a00; }
         .p-sq { border-radius: 4px; }
         .p-circ { border-radius: 50%; }
         .p-tri {
             width: 0; height: 0; background: transparent;
             border-left: 10px solid transparent; border-right: 10px solid transparent;
-            border-bottom: 20px solid #ff0000;
+            border-bottom: 20px solid #ff4a00;
         }
         
         .clear-btn {
@@ -158,7 +170,7 @@
     <div class="toolbar">
         <div class="color-panel">
             <div class="color-picker">
-                <!-- 🌈 ГРУПА 3: НЕОСНОВНІ (15) -->
+                <!-- 🌈 НЕОСНОВНІ -->
                 <button class="color-btn active" style="background:#ff4a00" data-c="#ff4a00" title="Вогняний червоний"></button>
                 <button class="color-btn" style="background:#ff6300" data-c="#ff6300" title="Вогняний"></button>
                 <button class="color-btn" style="background:#ffad00" data-c="#ffad00" title="Вогняний жовтий"></button>
@@ -177,7 +189,7 @@
 
                 <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- ☀️ ГРУПА 2: ВІДТІНКИ ОСНОВНИХ - ЯСНІ (7) -->
+                <!-- ☀️ ЯСНІ -->
                 <button class="color-btn" style="background:#ffbfbf" data-c="#ffbfbf" title="Переспілий кавун"></button>
                 <button class="color-btn" style="background:#ffe1bf" data-c="#ffe1bf" title="Ясний помаранчевий"></button>
                 <button class="color-btn" style="background:#fff7bf" data-c="#fff7bf" title="Переспіла диня"></button>
@@ -188,7 +200,7 @@
 
                 <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- 🤍 ГРУПА 2: ВІДТІНКИ ОСНОВНИХ - СВІТЛІ (7) -->
+                <!-- 🤍 СВІТЛІ -->
                 <button class="color-btn" style="background:#ff8080" data-c="#ff8080" title="Світлий кавун"></button>
                 <button class="color-btn" style="background:#ffc380" data-c="#ffc380" title="Бежевий"></button>
                 <button class="color-btn" style="background:#ffee80" data-c="#ffee80" title="Лимонний"></button>
@@ -199,7 +211,7 @@
 
                 <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- 🌸 ГРУПА 2: ВІДТІНКИ ОСНОВНИХ - НІЖНІ (7) -->
+                <!-- 🌸 НІЖНІ -->
                 <button class="color-btn" style="background:#ff4040" data-c="#ff4040" title="Кавуновий"></button>
                 <button class="color-btn" style="background:#ffa640" data-c="#ffa640" title="Ніжний помаранчевий"></button>
                 <button class="color-btn" style="background:#ffe640" data-c="#ffe640" title="Диня"></button>
@@ -210,7 +222,7 @@
 
                 <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- 🔴 ГРУПА 1: ОСНОВНІ (7) -->
+                <!-- 🔴 ОСНОВНІ -->
                 <button class="color-btn" style="background:#ff0000" data-c="#ff0000" title="Червоний"></button>
                 <button class="color-btn" style="background:#ff8800" data-c="#ff8800" title="Помаранчевий"></button>
                 <button class="color-btn" style="background:#ffde00" data-c="#ffde00" title="Жовтий"></button>
@@ -221,7 +233,7 @@
 
                 <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- 🍒 ГРУПА 2: ВІДТІНКИ ОСНОВНИХ - ТЕМНУВАТІ (7) -->
+                <!-- 🍒 ТЕМНУВАТІ -->
                 <button class="color-btn" style="background:#bf0000" data-c="#bf0000" title="Вишня"></button>
                 <button class="color-btn" style="background:#bf6600" data-c="#bf6600" title="Корж"></button>
                 <button class="color-btn" style="background:#bfa600" data-c="#bfa600" title="Темнуватий жовтий"></button>
@@ -232,7 +244,7 @@
 
                 <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- 🌑 ГРУПА 2: ВІДТІНКИ ОСНОВНИХ - ТЕМНІ (7) -->
+                <!--  ТЕМНІ -->
                 <button class="color-btn" style="background:#800000" data-c="#800000" title="Гниль"></button>
                 <button class="color-btn" style="background:#804400" data-c="#804400" title="Коричневий"></button>
                 <button class="color-btn" style="background:#806f00" data-c="#806f00" title="Болото"></button>
@@ -243,7 +255,7 @@
 
                 <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- 🌫️ ГРУПА 2: ВІДТІНКИ ОСНОВНИХ - МУТНІ (7) -->
+                <!-- 🌫️ МУТНІ -->
                 <button class="color-btn" style="background:#400000" data-c="#400000" title="Мутний червоний"></button>
                 <button class="color-btn" style="background:#402200" data-c="#402200" title="Темний коричневий"></button>
                 <button class="color-btn" style="background:#403700" data-c="#403700" title="Темне болото"></button>
@@ -254,7 +266,7 @@
 
                 <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- ⚪ ГРУПА 4: НЕЙТРАЛЬНІ (5) -->
+                <!--  НЕЙТРАЛЬНІ -->
                 <button class="color-btn" style="background:#ffffff" data-c="#ffffff" title="Білий"></button>
                 <button class="color-btn" style="background:#bfbfbf" data-c="#bfbfbf" title="Світло-сірий"></button>
                 <button class="color-btn" style="background:#808080" data-c="#808080" title="Сірий"></button>
@@ -263,40 +275,57 @@
 
                 <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- 💎 ГРУПА 5: ДОДАТКОВІ (3) -->
+                <!--  ДОДАТКОВІ -->
                 <button class="color-btn" style="background:#f3b800" data-c="#f3b800" title="Золото"></button>
                 <button class="color-btn" style="background:#f3f3f3" data-c="#f3f3f3" title="Срібло"></button>
-                <button class="color-btn" style="background:#b5823f" data-c="#b5823f" title="Молочний шоколад"></button> <!-- ✅ ЗМІНЕНО -->
+                <button class="color-btn" style="background:#b5823f" data-c="#b5823f" title="Молочний шоколад"></button>
 
                 <div style="width:10px; flex-shrink:0;"></div>
                 <button class="clear-btn" onclick="clearGrid()">🗑️</button>
             </div>
         </div>
 
-        <div class="shape-panel">
-            <button class="shape-btn active" data-s="square"><div class="preview-shape p-sq"></div></button>
-            <button class="shape-btn" data-s="circle"><div class="preview-shape p-circ"></div></button>
-            <button class="shape-btn" data-s="triangle"><div class="preview-shape p-tri"></div></button>
+        <div class="panels-group">
+            <div class="shape-panel">
+                <div class="btn-icon active" data-s="square"><div class="preview-shape p-sq"></div></div>
+                <div class="btn-icon" data-s="circle"><div class="preview-shape p-circ"></div></div>
+                <div class="btn-icon" data-s="triangle"><div class="preview-shape p-tri"></div></div>
+            </div>
+            <!-- 🆕 Панель інструментів -->
+            <div class="tools-panel">
+                <div class="btn-icon active" id="btn-draw" title="Пензлик">✏️</div>
+                <div class="btn-icon" id="btn-bucket" title="Відро">🪣</div>
+                <div class="btn-icon" id="btn-eraser" title="Ластик">🧽</div>
+            </div>
         </div>
     </div>
 
     <div id="grid"></div>
 
     <script>
-        let color = '#ff4a00'; // Зробив вогняний червоний активним за замовчуванням
+        let color = '#ff4a00';
         let shape = 'square';
+        let currentTool = 'draw'; // draw, bucket, eraser
         let isPainting = false;
         const grid = document.getElementById('grid');
+        const cols = 30, rows = 22;
 
-        for(let i=0; i<30*22; i++){
+        for(let i=0; i<cols*rows; i++){
             const cell = document.createElement('div');
             cell.className = 'cell square';
-            cell.onmousedown = () => { isPainting=true; draw(cell); };
-            cell.onmouseenter = () => { if(isPainting) draw(cell); };
+            cell.dataset.index = i;
+            cell.onmousedown = (e) => { 
+                isPainting = true; 
+                handleTool(cell); 
+            };
+            cell.onmouseenter = () => { 
+                if(isPainting && currentTool !== 'bucket') handleTool(cell); 
+            };
             grid.appendChild(cell);
         }
-        document.onmouseup = () => isPainting=false;
+        document.onmouseup = () => isPainting = false;
 
+        // Кольори
         document.querySelectorAll('.color-btn[data-c]').forEach(btn => {
             btn.onclick = function(e){
                 e.stopPropagation();
@@ -304,21 +333,58 @@
                 this.classList.add('active');
                 color = this.dataset.c;
                 updatePreviews();
+                if(currentTool === 'eraser') setTool('draw'); // Авто-перемикання на пензлик
             }
         });
 
-        document.querySelectorAll('.shape-btn').forEach(btn => {
+        // Фігури
+        document.querySelectorAll('.shape-panel .btn-icon').forEach(btn => {
             btn.onclick = function(e){
                 e.stopPropagation();
-                document.querySelectorAll('.shape-btn').forEach(b=>b.classList.remove('active'));
+                document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 shape = this.dataset.s;
+                updatePreviews();
             }
         });
 
-        document.querySelector('.clear-btn').onclick = function(e){ e.stopPropagation(); };
+        // 🆕 Інструменти
+        const btnDraw = document.getElementById('btn-draw');
+        const btnBucket = document.getElementById('btn-bucket');
+        const btnEraser = document.getElementById('btn-eraser');
 
-        function draw(cell){
+        btnDraw.onclick = () => setTool('draw');
+        btnBucket.onclick = () => setTool('bucket');
+        btnEraser.onclick = () => setTool('eraser');
+
+        function setTool(tool) {
+            currentTool = tool;
+            btnDraw.classList.toggle('active', tool === 'draw');
+            btnBucket.classList.toggle('active', tool === 'bucket');
+            btnEraser.classList.toggle('active', tool === 'eraser');
+            
+            // Якщо вибрали ластик або відро, знімаємо виділення з фігур, бо вони не потрібні
+            if(tool !== 'draw') {
+                document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
+            } else {
+                // Повертаємо активну фігуру
+                const activeShapeBtn = document.querySelector(`.shape-panel .btn-icon[data-s="${shape}"]`);
+                if(activeShapeBtn) activeShapeBtn.classList.add('active');
+            }
+        }
+
+        function handleTool(cell) {
+            if(currentTool === 'draw') {
+                paintCell(cell);
+            } else if(currentTool === 'eraser') {
+                eraseCell(cell);
+            } else if(currentTool === 'bucket') {
+                floodFill(cell);
+                isPainting = false; // Відро працює по одному кліку
+            }
+        }
+
+        function paintCell(cell) {
             cell.className = 'cell ' + shape;
             if(shape === 'triangle'){
                 cell.style.background = 'transparent';
@@ -326,6 +392,106 @@
             } else {
                 cell.style.background = color;
                 cell.style.borderBottom = '';
+            }
+        }
+
+        function eraseCell(cell) {
+            cell.className = 'cell square';
+            cell.style.background = '#E0F7FA';
+            cell.style.borderBottom = '';
+        }
+
+        //  Алгоритм заливки (Flood Fill)
+        function floodFill(startCell) {
+            const startIndex = parseInt(startCell.dataset.index);
+            const targetColor = startCell.style.background || '#E0F7FA'; // За замовчуванням фон
+            const targetShape = startCell.classList.contains('triangle') ? 'triangle' : 
+                                (startCell.classList.contains('circle') ? 'circle' : 'square');
+            
+            // Якщо клікаємо тим же кольором і фігурою - нічого не робимо
+            const currentFillColor = (shape === 'triangle') ? 'transparent' : color;
+            // Для порівняння трикутників треба дивитись на borderBottomColor
+            const isTriangleColorMatch = (startCell.classList.contains('triangle') && shape === 'triangle' && startCell.style.borderBottomColor === color);
+            
+            if (targetColor === currentFillColor && targetShape === shape && !isTriangleColorMatch) return; 
+            // Ускладнена перевірка для трикутників, спростимо: якщо колір і форма збігаються з новими - вихід
+            // Але простіше перевірити чи не фарбуємо ми вже зафарбоване
+            
+            // Перевірка "чи вже зафарбовано"
+            let isAlreadyFilled = false;
+            if (shape === 'triangle') {
+                 isAlreadyFilled = startCell.classList.contains('triangle') && startCell.style.borderBottomColor === color;
+            } else {
+                 isAlreadyFilled = startCell.style.background === color && !startCell.classList.contains('triangle');
+            }
+            // Якщо це трикутник, то background прозорий.
+            // Додамо просту перевірку: якщо клітинка вже має новий колір/форму, не заповнюємо
+            if (shape === 'triangle') {
+                if (startCell.classList.contains('triangle') && startCell.style.borderBottomColor === color) return;
+            } else {
+                if (!startCell.classList.contains('triangle') && startCell.style.background === color) return;
+            }
+
+
+            const stack = [startIndex];
+            const visited = new Set();
+            visited.add(startIndex);
+
+            const cells = grid.children;
+
+            while(stack.length > 0) {
+                const idx = stack.pop();
+                const cell = cells[idx];
+
+                // Фарбуємо
+                paintCell(cell);
+
+                // Сусіди
+                const neighbors = [
+                    idx - 1, // Left
+                    idx + 1, // Right
+                    idx - cols, // Top
+                    idx + cols // Bottom
+                ];
+
+                for(let nIdx of neighbors) {
+                    if(nIdx >= 0 && nIdx < cols*rows && !visited.has(nIdx)) {
+                        // Перевірка меж (щоб не перестрибувати рядки)
+                        const row = Math.floor(idx / cols);
+                        const nRow = Math.floor(nIdx / cols);
+                        
+                        // Ліво/Право мають бути в тому ж рядку
+                        if (Math.abs(idx - nIdx) === 1 && row !== nRow) continue;
+
+                        const nCell = cells[nIdx];
+                        
+                        // Перевіряємо чи збігається колір і форма сусіда з цільовим
+                        let match = false;
+                        const nColor = nCell.style.background || '#E0F7FA';
+                        const nShape = nCell.classList.contains('triangle') ? 'triangle' : 
+                                       (nCell.classList.contains('circle') ? 'circle' : 'square');
+                        
+                        // Логіка порівняння кольорів
+                        let colorMatch = false;
+                        if (nShape === 'triangle') {
+                             colorMatch = (targetShape === 'triangle') && (nCell.style.borderBottomColor === (startCell.style.borderBottomColor || targetColor));
+                        } else {
+                             colorMatch = (targetShape !== 'triangle') && (nColor === targetColor);
+                        }
+                        
+                        // Спеціальний випадок для порожньої клітинки
+                        if (targetColor === '#E0F7FA' && targetShape === 'square' && nColor === '#E0F7FA' && nShape === 'square') {
+                             match = true;
+                        } else if (colorMatch && nShape === targetShape) {
+                             match = true;
+                        }
+
+                        if(match) {
+                            visited.add(nIdx);
+                            stack.push(nIdx);
+                        }
+                    }
+                }
             }
         }
 

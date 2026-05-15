@@ -18,12 +18,12 @@
         h1 { 
             color: white; 
             margin-bottom: 15px; 
-            margin-top: 10px; /* Невеликий відступ від верху */
+            margin-top: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
             font-size: 26px;
             text-align: center;
             position: relative;
-            z-index: 1000; /* НАЗВА ТЕПЕР НА ПЕРЕДНЬОМУ ПЛАНІ */
+            z-index: 1000;
         }
         
         .toolbar {
@@ -34,43 +34,48 @@
             width: 100%;
             justify-content: center;
             position: relative;
-            z-index: 500; /* Панель нижче за назву */
+            z-index: 500;
         }
         
         .color-panel {
-    background: rgba(255, 255, 255, 0.95);
-    padding: 8px 8px 12px 8px; /* Додав місце знизу для скролу */
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    max-width: 95vw;
-    overflow-x: auto;
-    white-space: nowrap;
-    scroll-behavior: smooth;
-}
-/* Стилізуємо скролбар щоб був тоншим */
-.color-panel::-webkit-scrollbar {
-    height: 6px;
-}
-.color-panel::-webkit-scrollbar-track {
-    background: rgba(0,0,0,0.1);
-    border-radius: 3px;
-}
-.color-panel::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.3);
-    border-radius: 3px;
-}
-.color-panel::-webkit-scrollbar-thumb:hover {
-    background: rgba(0,0,0,0.5);
-}
+            background: rgba(255, 255, 255, 0.95);
+            padding: 8px 8px 16px 8px; /* Більше місця знизу для скролу */
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            max-width: 95vw;
+            overflow-x: auto;
+            white-space: nowrap;
+            scroll-behavior: smooth;
+        }
+        /* Завжди видима прокрутка */
+        .color-panel::-webkit-scrollbar {
+            height: 8px;
+        }
+        .color-panel::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.1);
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+        .color-panel::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.4);
+            border-radius: 4px;
+        }
+        .color-panel::-webkit-scrollbar-thumb:hover {
+            background: rgba(0,0,0,0.6);
+        }
+        /* Firefox */
+        .color-panel {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0,0,0,0.4) rgba(0,0,0,0.1);
+        }
         
-        /* Підказки з назвами кольорів */
         .color-btn[title] {
             position: relative;
         }
         .color-btn[title]:hover::after {
             content: attr(title);
             position: absolute;
-            top: 115%; /* Назва з'являється знизу кнопки */
+            top: 115%;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0,0,0,0.85);
@@ -80,7 +85,7 @@
             font-size: 11px;
             white-space: nowrap;
             pointer-events: none;
-            z-index: 2000; /* Підказка теж високо */
+            z-index: 2000;
         }
 
         .color-picker {
@@ -96,6 +101,7 @@
             cursor: pointer;
             transition: transform 0.1s;
             flex-shrink: 0;
+            user-select: none; /* Заборона виділення */
         }
         .color-btn:hover { transform: scale(1.2); z-index: 10; position: relative; }
         .color-btn.active {
@@ -124,6 +130,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            user-select: none;
         }
         .shape-btn.active {
             border-color: #333;
@@ -142,6 +149,7 @@
         .clear-btn {
             background: #ff4757; color: white; border: none;
             padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
+            user-select: none;
         }
         
         #grid {
@@ -175,7 +183,7 @@
     </style>
 </head>
 <body>
-    <h1> Block Builder Ultimate</h1>
+    <h1>🎮 Block Builder Ultimate</h1>
     
     <div class="toolbar">
         <div class="color-panel">
@@ -236,7 +244,7 @@
                 <button class="color-btn" style="background:#ff40f2" data-c="#ff40f2" title="Ніжний рожевий"></button>
 
                 <div style="width:10px;"></div>
-                <button class="clear-btn" onclick="clearGrid()">️</button>
+                <button class="clear-btn" onclick="clearGrid()">🗑️</button>
             </div>
         </div>
 
@@ -265,7 +273,8 @@
         document.onmouseup = () => isPainting=false;
 
         document.querySelectorAll('.color-btn[data-c]').forEach(btn => {
-            btn.onclick = function(){
+            btn.onclick = function(e){
+                e.stopPropagation(); // Запобігає спливанню події
                 document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 color = this.dataset.c;
@@ -274,12 +283,17 @@
         });
 
         document.querySelectorAll('.shape-btn').forEach(btn => {
-            btn.onclick = function(){
+            btn.onclick = function(e){
+                e.stopPropagation(); // Запобігає спливанню події
                 document.querySelectorAll('.shape-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 shape = this.dataset.s;
             }
         });
+
+        document.querySelector('.clear-btn').onclick = function(e){
+            e.stopPropagation();
+        };
 
         function draw(cell){
             cell.className = 'cell ' + shape;

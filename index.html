@@ -17,8 +17,7 @@
         }
         h1 { 
             color: white; 
-            margin-bottom: 15px; 
-            margin-top: 10px;
+            margin: 10px 0 15px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
             font-size: 26px;
             text-align: center;
@@ -37,15 +36,14 @@
             z-index: 500;
         }
         
-        /* 🔥 НОВИЙ КОД - БЕЗ ПРОКРУТКИ */
         .color-panel {
             background: rgba(255, 255, 255, 0.95);
             padding: 12px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             width: 96vw;
-            max-width: 1100px;
-            overflow: visible; /* Прибрали прокрутку */
+            max-width: 1200px;
+            overflow: visible;
         }
 
         .color-picker {
@@ -53,31 +51,31 @@
             gap: 6px;
             align-items: center;
             justify-content: center;
-            flex-wrap: wrap; /* Кольори переходять на новий рядок */
+            flex-wrap: wrap;
         }
 
         .color-btn {
-            width: 28px;
-            height: 28px;
+            width: 26px;
+            height: 26px;
             border: 2px solid rgba(0,0,0,0.1);
             border-radius: 50%;
             cursor: pointer;
             transition: transform 0.15s;
             flex-shrink: 0;
             user-select: none;
+            position: relative;
         }
-        .color-btn:hover { transform: scale(1.25); z-index: 10; position: relative; }
+        .color-btn:hover { transform: scale(1.25); z-index: 10; }
         .color-btn.active {
             border-color: white;
             box-shadow: 0 0 0 2px #333;
             transform: scale(1.15);
         }
-
-        .color-btn[title] { position: relative; }
-        .color-btn[title]:hover::after {
+        /* Підказки */
+        .color-btn:hover::after {
             content: attr(title);
             position: absolute;
-            top: 115%;
+            bottom: 115%;
             left: 50%;
             transform: translateX(-50%);
             background: rgba(0,0,0,0.85);
@@ -88,9 +86,11 @@
             white-space: nowrap;
             pointer-events: none;
             z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.2s;
         }
-        /* 🔥 КІНЕЦЬ НОВОГО КОДУ */
-        
+        .color-btn:hover::after { opacity: 1; }
+
         .shape-panel {
             background: rgba(255, 255, 255, 0.95);
             padding: 8px;
@@ -102,15 +102,12 @@
             align-items: center;
         }
         .shape-btn {
-            width: 40px;
-            height: 40px;
+            width: 40px; height: 40px;
             border: 2px solid rgba(0,0,0,0.1);
             border-radius: 8px;
             background: white;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             user-select: none;
         }
         .shape-btn.active {
@@ -122,8 +119,7 @@
         .p-circ { border-radius: 50%; }
         .p-tri {
             width: 0; height: 0; background: transparent;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
+            border-left: 10px solid transparent; border-right: 10px solid transparent;
             border-bottom: 20px solid #ff0000;
         }
         
@@ -145,20 +141,13 @@
             max-width: 98vw;
             overflow: auto;
         }
-        .cell {
-            width: 25px; height: 25px;
-            background: #E0F7FA;
-            cursor: pointer;
-        }
+        .cell { width: 25px; height: 25px; background: #E0F7FA; cursor: pointer; }
         .cell:hover { opacity: 0.8; }
-        
         .cell.square { border-radius: 3px; }
         .cell.circle { border-radius: 50%; }
         .cell.triangle {
-            background: transparent !important;
-            width: 0; height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
+            background: transparent !important; width: 0; height: 0;
+            border-left: 12px solid transparent; border-right: 12px solid transparent;
             border-bottom: 25px solid;
         }
     </style>
@@ -169,7 +158,7 @@
     <div class="toolbar">
         <div class="color-panel">
             <div class="color-picker">
-                <!-- ОСНОВНІ -->
+                <!--  ОРИГІНАЛЬНІ 23 -->
                 <button class="color-btn active" style="background:#ff0000" data-c="#ff0000" title="Червоний"></button>
                 <button class="color-btn" style="background:#ff4a00" data-c="#ff4a00" title="Вогняний червоний"></button>
                 <button class="color-btn" style="background:#ff6300" data-c="#ff6300" title="Вогняний"></button>
@@ -193,9 +182,21 @@
                 <button class="color-btn" style="background:#808080" data-c="#808080" title="Сірий"></button>
                 <button class="color-btn" style="background:#404040" data-c="#404040" title="Темно-сірий"></button>
                 <button class="color-btn" style="background:#000000" data-c="#000000" title="Чорний"></button>
-                
-                <!-- СВІТЛІ -->
-                <div style="width:5px;"></div>
+
+                <div style="width:12px; flex-shrink:0;"></div>
+
+                <!-- ☀️ ЯСНІ (75% світлість) -->
+                <button class="color-btn" style="background:#ffbfbf" data-c="#ffbfbf" title="Переспілий кавун"></button>
+                <button class="color-btn" style="background:#ffe1bf" data-c="#ffe1bf" title="Ясний помаранчевий"></button>
+                <button class="color-btn" style="background:#fff7bf" data-c="#fff7bf" title="Переспіла диня"></button>
+                <button class="color-btn" style="background:#d0ffbf" data-c="#d0ffbf" title="Недоспіла капуста"></button>
+                <button class="color-btn" style="background:#bfc5ff" data-c="#bfc5ff" title="Синя зоря"></button>
+                <button class="color-btn" style="background:#e1bfff" data-c="#e1bfff" title="Фіолетове сяйво"></button>
+                <button class="color-btn" style="background:#ffbffb" data-c="#ffbffb" title="Рожева класика"></button>
+
+                <div style="width:12px; flex-shrink:0;"></div>
+
+                <!-- 🤍 СВІТЛІ (50% світлість) -->
                 <button class="color-btn" style="background:#ff8080" data-c="#ff8080" title="Світлий кавун"></button>
                 <button class="color-btn" style="background:#ffc380" data-c="#ffc380" title="Бежевий"></button>
                 <button class="color-btn" style="background:#ffee80" data-c="#ffee80" title="Лимонний"></button>
@@ -204,18 +205,9 @@
                 <button class="color-btn" style="background:#c380ff" data-c="#c380ff" title="Світлий фіолетовий"></button>
                 <button class="color-btn" style="background:#ff80f7" data-c="#ff80f7" title="Світло-рожевий"></button>
 
-                <!-- ТЕМНІ -->
-                <div style="width:5px;"></div>
-                <button class="color-btn" style="background:#800000" data-c="#800000" title="Гниль"></button>
-                <button class="color-btn" style="background:#804400" data-c="#804400" title="Коричневий"></button>
-                <button class="color-btn" style="background:#806f00" data-c="#806f00" title="Болото"></button>
-                <button class="color-btn" style="background:#228000" data-c="#228000" title="Зелений"></button>
-                <button class="color-btn" style="background:#000b80" data-c="#000b80" title="Ніч"></button>
-                <button class="color-btn" style="background:#440080" data-c="#440080" title="Віноград"></button>
-                <button class="color-btn" style="background:#800077" data-c="#800077" title="Темно-рожевий"></button>
+                <div style="width:12px; flex-shrink:0;"></div>
 
-                <!-- НІЖНІ -->
-                <div style="width:5px;"></div>
+                <!-- 🌸 НІЖНІ (25% насиченості) -->
                 <button class="color-btn" style="background:#ff4040" data-c="#ff4040" title="Кавуновий"></button>
                 <button class="color-btn" style="background:#ffa640" data-c="#ffa640" title="Ніжний помаранчевий"></button>
                 <button class="color-btn" style="background:#ffe640" data-c="#ffe640" title="Диня"></button>
@@ -224,7 +216,47 @@
                 <button class="color-btn" style="background:#a640ff" data-c="#a640ff" title="Ніжний фіолетовий"></button>
                 <button class="color-btn" style="background:#ff40f2" data-c="#ff40f2" title="Ніжний рожевий"></button>
 
-                <div style="width:10px;"></div>
+                <div style="width:12px; flex-shrink:0;"></div>
+
+                <!-- 🍒 ТЕМНУВАТІ (25% темнота) -->
+                <button class="color-btn" style="background:#bf0000" data-c="#bf0000" title="Вишня"></button>
+                <button class="color-btn" style="background:#bf6600" data-c="#bf6600" title="Корж"></button>
+                <button class="color-btn" style="background:#bfa600" data-c="#bfa600" title="Темнуватий жовтий"></button>
+                <button class="color-btn" style="background:#33bf00" data-c="#33bf00" title="Трава"></button>
+                <button class="color-btn" style="background:#0010bf" data-c="#0010bf" title="Класичний синій"></button>
+                <button class="color-btn" style="background:#6600bf" data-c="#6600bf" title="Фіолетова класика"></button>
+                <button class="color-btn" style="background:#bf00b3" data-c="#bf00b3" title="Темнуватий рожевий"></button>
+
+                <div style="width:12px; flex-shrink:0;"></div>
+
+                <!-- 🌑 ТЕМНІ (50% темнота) -->
+                <button class="color-btn" style="background:#800000" data-c="#800000" title="Гниль"></button>
+                <button class="color-btn" style="background:#804400" data-c="#804400" title="Коричневий"></button>
+                <button class="color-btn" style="background:#806f00" data-c="#806f00" title="Болото"></button>
+                <button class="color-btn" style="background:#228000" data-c="#228000" title="Зелений"></button>
+                <button class="color-btn" style="background:#000b80" data-c="#000b80" title="Ніч"></button>
+                <button class="color-btn" style="background:#440080" data-c="#440080" title="Віноград"></button>
+                <button class="color-btn" style="background:#800077" data-c="#800077" title="Темно-рожевий"></button>
+
+                <div style="width:12px; flex-shrink:0;"></div>
+
+                <!-- 🌫️ МУТНІ (75% темнота) -->
+                <button class="color-btn" style="background:#400000" data-c="#400000" title="Мутний червоний"></button>
+                <button class="color-btn" style="background:#402200" data-c="#402200" title="Темний коричневий"></button>
+                <button class="color-btn" style="background:#403700" data-c="#403700" title="Темне болото"></button>
+                <button class="color-btn" style="background:#114000" data-c="#114000" title="Темний зелений"></button>
+                <button class="color-btn" style="background:#000540" data-c="#000540" title="Повна ніч"></button>
+                <button class="color-btn" style="background:#220040" data-c="#220040" title="Гнилий виноград"></button>
+                <button class="color-btn" style="background:#40003c" data-c="#40003c" title="Мутний рожевий"></button>
+
+                <div style="width:12px; flex-shrink:0;"></div>
+
+                <!-- 💎 ДОДАТКОВІ -->
+                <button class="color-btn" style="background:#f3b800" data-c="#f3b800" title="Золото"></button>
+                <button class="color-btn" style="background:#f3f3f3" data-c="#f3f3f3" title="Срібло"></button>
+                <button class="color-btn" style="background:#b5823f" data-c="#b5823f" title="Темна шкіра"></button>
+
+                <div style="width:10px; flex-shrink:0;"></div>
                 <button class="clear-btn" onclick="clearGrid()">🗑️</button>
             </div>
         </div>
@@ -272,9 +304,7 @@
             }
         });
 
-        document.querySelector('.clear-btn').onclick = function(e){
-            e.stopPropagation();
-        };
+        document.querySelector('.clear-btn').onclick = function(e){ e.stopPropagation(); };
 
         function draw(cell){
             cell.className = 'cell ' + shape;
@@ -295,7 +325,7 @@
         }
 
         function clearGrid(){
-            if(confirm('Очистити все?')){
+            if(confirm('Очистити все поле?')){
                 document.querySelectorAll('.cell').forEach(c => {
                     c.className = 'cell square';
                     c.style.background = '#E0F7FA';

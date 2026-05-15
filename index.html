@@ -38,14 +38,30 @@
         }
         
         .color-panel {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 8px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            max-width: 95vw;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px 8px 12px 8px; /* Додав місце знизу для скролу */
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    max-width: 95vw;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth;
+}
+/* Стилізуємо скролбар щоб був тоншим */
+.color-panel::-webkit-scrollbar {
+    height: 6px;
+}
+.color-panel::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+}
+.color-panel::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.3);
+    border-radius: 3px;
+}
+.color-panel::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.5);
+}
         
         /* Підказки з назвами кольорів */
         .color-btn[title] {

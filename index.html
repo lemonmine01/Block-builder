@@ -14,7 +14,6 @@
             flex-direction: column;
             align-items: center;
             padding: 10px;
-            overflow-x: hidden;
         }
         h1 { color: white; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-size: 24px; }
         
@@ -27,16 +26,35 @@
             justify-content: center;
         }
         
-        /* --- Палітра --- */
         .color-panel {
             background: rgba(255, 255, 255, 0.95);
             padding: 8px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             max-width: 95vw;
-            overflow-x: auto; /* Прокрутка, якщо кольорів багато */
+            overflow-x: auto;
             white-space: nowrap;
         }
+        /* Стилізація підказки */
+        .color-btn[title] {
+            position: relative;
+        }
+        .color-btn[title]:hover::after {
+            content: attr(title);
+            position: absolute;
+            bottom: 110%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 100;
+        }
+
         .color-picker {
             display: flex;
             gap: 4px;
@@ -46,7 +64,7 @@
             width: 30px;
             height: 30px;
             border: 2px solid rgba(0,0,0,0.1);
-            border-radius: 50%; /* Тепер круглі кнопки */
+            border-radius: 50%;
             cursor: pointer;
             transition: transform 0.1s;
             flex-shrink: 0;
@@ -58,7 +76,6 @@
             transform: scale(1.15);
         }
         
-        /* --- Панель фігур --- */
         .shape-panel {
             background: rgba(255, 255, 255, 0.95);
             padding: 8px;
@@ -99,10 +116,9 @@
             padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
         }
         
-        /* --- Сітка --- */
         #grid {
             display: grid;
-            grid-template-columns: repeat(30, 25px); /* Трохи зменшив клітинки, щоб влізло */
+            grid-template-columns: repeat(30, 25px);
             grid-template-rows: repeat(22, 25px);
             gap: 1px;
             background: #87CEEB;
@@ -119,7 +135,6 @@
         }
         .cell:hover { opacity: 0.8; }
         
-        /* Форми клітинок */
         .cell.square { border-radius: 3px; }
         .cell.circle { border-radius: 50%; }
         .cell.triangle {
@@ -129,44 +144,41 @@
             border-right: 12px solid transparent;
             border-bottom: 25px solid;
         }
-
-        .info { color: #ccc; margin-top: 10px; font-size: 12px; }
     </style>
 </head>
 <body>
     <h1>🎮 Block Builder Ultimate</h1>
     
     <div class="toolbar">
-        <!-- Кольори (Прокручується) -->
         <div class="color-panel">
             <div class="color-picker">
-                <!-- ОСНОВНІ (23) -->
-                <button class="color-btn active" style="background:#ff0000" data-c="#ff0000"></button>
-                <button class="color-btn" style="background:#ff4a00" data-c="#ff4a00"></button>
-                <button class="color-btn" style="background:#ff6300" data-c="#ff6300"></button>
-                <button class="color-btn" style="background:#ff8800" data-c="#ff8800"></button>
-                <button class="color-btn" style="background:#ffad00" data-c="#ffad00"></button>
-                <button class="color-btn" style="background:#ffde00" data-c="#ffde00"></button>
-                <button class="color-btn" style="background:#d6ff00" data-c="#d6ff00"></button>
-                <button class="color-btn" style="background:#a5ff00" data-c="#a5ff00"></button>
-                <button class="color-btn" style="background:#42ff00" data-c="#42ff00"></button>
-                <button class="color-btn" style="background:#00ff84" data-c="#00ff84"></button>
-                <button class="color-btn" style="background:#00ffe6" data-c="#00ffe6"></button>
-                <button class="color-btn" style="background:#00c1ff" data-c="#00c1ff"></button>
-                <button class="color-btn" style="background:#0016ff" data-c="#0016ff"></button>
-                <button class="color-btn" style="background:#5a00ff" data-c="#5a00ff"></button>
-                <button class="color-btn" style="background:#8a00ff" data-c="#8a00ff"></button>
-                <button class="color-btn" style="background:#e100ff" data-c="#e100ff"></button>
-                <button class="color-btn" style="background:#ff00ec" data-c="#ff00ec"></button>
-                <button class="color-btn" style="background:#ff0095" data-c="#ff0095"></button>
-                <button class="color-btn" style="background:#ffffff" data-c="#ffffff"></button>
-                <button class="color-btn" style="background:#bfbfbf" data-c="#bfbfbf"></button>
-                <button class="color-btn" style="background:#808080" data-c="#808080"></button>
-                <button class="color-btn" style="background:#404040" data-c="#404040"></button>
-                <button class="color-btn" style="background:#000000" data-c="#000000"></button>
+                <!-- ОСНОВНІ -->
+                <button class="color-btn active" style="background:#ff0000" data-c="#ff0000" title="Червоний"></button>
+                <button class="color-btn" style="background:#ff4a00" data-c="#ff4a00" title="Вогняний червоний"></button>
+                <button class="color-btn" style="background:#ff6300" data-c="#ff6300" title="Вогняний"></button>
+                <button class="color-btn" style="background:#ff8800" data-c="#ff8800" title="Помаранчевий"></button>
+                <button class="color-btn" style="background:#ffad00" data-c="#ffad00" title="Вогняний жовтий"></button>
+                <button class="color-btn" style="background:#ffde00" data-c="#ffde00" title="Жовтий"></button>
+                <button class="color-btn" style="background:#d6ff00" data-c="#d6ff00" title="Жовто-зелений"></button>
+                <button class="color-btn" style="background:#a5ff00" data-c="#a5ff00" title="Лаймовий"></button>
+                <button class="color-btn" style="background:#42ff00" data-c="#42ff00" title="Яскраво-зелений"></button>
+                <button class="color-btn" style="background:#00ff84" data-c="#00ff84" title="Бірюзовий"></button>
+                <button class="color-btn" style="background:#00ffe6" data-c="#00ffe6" title="Голубий"></button>
+                <button class="color-btn" style="background:#00c1ff" data-c="#00c1ff" title="Сіановий"></button>
+                <button class="color-btn" style="background:#0016ff" data-c="#0016ff" title="Синій"></button>
+                <button class="color-btn" style="background:#5a00ff" data-c="#5a00ff" title="Синьо-фіолетовий"></button>
+                <button class="color-btn" style="background:#8a00ff" data-c="#8a00ff" title="Фіолетовий"></button>
+                <button class="color-btn" style="background:#e100ff" data-c="#e100ff" title="Фіолетово-рожевий"></button>
+                <button class="color-btn" style="background:#ff00ec" data-c="#ff00ec" title="Рожевий"></button>
+                <button class="color-btn" style="background:#ff0095" data-c="#ff0095" title="Малиновий"></button>
+                <button class="color-btn" style="background:#ffffff" data-c="#ffffff" title="Білий"></button>
+                <button class="color-btn" style="background:#bfbfbf" data-c="#bfbfbf" title="Світло-сірий"></button>
+                <button class="color-btn" style="background:#808080" data-c="#808080" title="Сірий"></button>
+                <button class="color-btn" style="background:#404040" data-c="#404040" title="Темно-сірий"></button>
+                <button class="color-btn" style="background:#000000" data-c="#000000" title="Чорний"></button>
                 
-                <!-- СВІТЛІ (7) -->
-                <div style="width:5px;"></div> <!-- Роздільник -->
+                <!-- СВІТЛІ -->
+                <div style="width:5px;"></div>
                 <button class="color-btn" style="background:#ff8080" data-c="#ff8080" title="Світлий кавун"></button>
                 <button class="color-btn" style="background:#ffc380" data-c="#ffc380" title="Бежевий"></button>
                 <button class="color-btn" style="background:#ffee80" data-c="#ffee80" title="Лимонний"></button>
@@ -175,7 +187,7 @@
                 <button class="color-btn" style="background:#c380ff" data-c="#c380ff" title="Світлий фіолетовий"></button>
                 <button class="color-btn" style="background:#ff80f7" data-c="#ff80f7" title="Світло-рожевий"></button>
 
-                <!-- ТЕМНІ (7) -->
+                <!-- ТЕМНІ -->
                 <div style="width:5px;"></div>
                 <button class="color-btn" style="background:#800000" data-c="#800000" title="Гниль"></button>
                 <button class="color-btn" style="background:#804400" data-c="#804400" title="Коричневий"></button>
@@ -185,7 +197,7 @@
                 <button class="color-btn" style="background:#440080" data-c="#440080" title="Віноград"></button>
                 <button class="color-btn" style="background:#800077" data-c="#800077" title="Темно-рожевий"></button>
 
-                <!-- НІЖНІ (7) -->
+                <!-- НІЖНІ -->
                 <div style="width:5px;"></div>
                 <button class="color-btn" style="background:#ff4040" data-c="#ff4040" title="Кавуновий"></button>
                 <button class="color-btn" style="background:#ffa640" data-c="#ffa640" title="Ніжний помаранчевий"></button>
@@ -200,7 +212,6 @@
             </div>
         </div>
 
-        <!-- Фігури -->
         <div class="shape-panel">
             <button class="shape-btn active" data-s="square"><div class="preview-shape p-sq"></div></button>
             <button class="shape-btn" data-s="circle"><div class="preview-shape p-circ"></div></button>
@@ -209,7 +220,6 @@
     </div>
 
     <div id="grid"></div>
-    <div class="info">ЛКМ - малювати | Права панель - зміна форми</div>
 
     <script>
         let color = '#ff0000';
@@ -217,7 +227,6 @@
         let isPainting = false;
         const grid = document.getElementById('grid');
 
-        // Створення сітки
         for(let i=0; i<30*22; i++){
             const cell = document.createElement('div');
             cell.className = 'cell square';
@@ -227,7 +236,6 @@
         }
         document.onmouseup = () => isPainting=false;
 
-        // Вибір кольору
         document.querySelectorAll('.color-btn[data-c]').forEach(btn => {
             btn.onclick = function(){
                 document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
@@ -237,7 +245,6 @@
             }
         });
 
-        // Вибір фігури
         document.querySelectorAll('.shape-btn').forEach(btn => {
             btn.onclick = function(){
                 document.querySelectorAll('.shape-btn').forEach(b=>b.classList.remove('active'));

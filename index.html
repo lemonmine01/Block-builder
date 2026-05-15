@@ -91,7 +91,6 @@
         }
         .color-btn:hover::after { opacity: 1; }
 
-        /* Панелі інструментів та фігур */
         .panels-group {
             display: flex;
             gap: 10px;
@@ -293,7 +292,7 @@
             </div>
             <!-- 🆕 Панель інструментів -->
             <div class="tools-panel">
-                <div class="btn-icon active" id="btn-draw" title="Пензлик">✏️</div>
+                <div class="btn-icon active" id="btn-draw" title="Пензлик">️</div>
                 <div class="btn-icon" id="btn-bucket" title="Відро">🪣</div>
                 <div class="btn-icon" id="btn-eraser" title="Ластик">🧽</div>
             </div>
@@ -333,7 +332,7 @@
                 this.classList.add('active');
                 color = this.dataset.c;
                 updatePreviews();
-                if(currentTool === 'eraser') setTool('draw'); // Авто-перемикання на пензлик
+                if(currentTool === 'eraser') setTool('draw'); 
             }
         });
 
@@ -363,11 +362,9 @@
             btnBucket.classList.toggle('active', tool === 'bucket');
             btnEraser.classList.toggle('active', tool === 'eraser');
             
-            // Якщо вибрали ластик або відро, знімаємо виділення з фігур, бо вони не потрібні
             if(tool !== 'draw') {
                 document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
             } else {
-                // Повертаємо активну фігуру
                 const activeShapeBtn = document.querySelector(`.shape-panel .btn-icon[data-s="${shape}"]`);
                 if(activeShapeBtn) activeShapeBtn.classList.add('active');
             }
@@ -380,7 +377,7 @@
                 eraseCell(cell);
             } else if(currentTool === 'bucket') {
                 floodFill(cell);
-                isPainting = false; // Відро працює по одному кліку
+                isPainting = false; 
             }
         }
 
@@ -395,49 +392,35 @@
             }
         }
 
+        // ✅ ВИПРАВЛЕНО: Ластик повністю видаляє інлайн-стилі
         function eraseCell(cell) {
             cell.className = 'cell square';
-            cell.style.background = '#E0F7FA';
+            cell.style.background = ''; // Прибираємо колір, щоб повернувся CSS фон
             cell.style.borderBottom = '';
         }
 
-        //  Алгоритм заливки (Flood Fill)
+        // ✅ ВИПРАВЛЕНО: Розумне відро
         function floodFill(startCell) {
             const startIndex = parseInt(startCell.dataset.index);
-            const targetColor = startCell.style.background || '#E0F7FA'; // За замовчуванням фон
-            const targetShape = startCell.classList.contains('triangle') ? 'triangle' : 
-                                (startCell.classList.contains('circle') ? 'circle' : 'square');
-            
-            // Якщо клікаємо тим же кольором і фігурою - нічого не робимо
-            const currentFillColor = (shape === 'triangle') ? 'transparent' : color;
-            // Для порівняння трикутників треба дивитись на borderBottomColor
-            const isTriangleColorMatch = (startCell.classList.contains('triangle') && shape === 'triangle' && startCell.style.borderBottomColor === color);
-            
-            if (targetColor === currentFillColor && targetShape === shape && !isTriangleColorMatch) return; 
-            // Ускладнена перевірка для трикутників, спростимо: якщо колір і форма збігаються з новими - вихід
-            // Але простіше перевірити чи не фарбуємо ми вже зафарбоване
-            
-            // Перевірка "чи вже зафарбовано"
-            let isAlreadyFilled = false;
-            if (shape === 'triangle') {
-                 isAlreadyFilled = startCell.classList.contains('triangle') && startCell.style.borderBottomColor === color;
-            } else {
-                 isAlreadyFilled = startCell.style.background === color && !startCell.classList.contains('triangle');
-            }
-            // Якщо це трикутник, то background прозорий.
-            // Додамо просту перевірку: якщо клітинка вже має новий колір/форму, не заповнюємо
-            if (shape === 'triangle') {
-                if (startCell.classList.contains('triangle') && startCell.style.borderBottomColor === color) return;
-            } else {
-                if (!startCell.classList.contains('triangle') && startCell.style.background === color) return;
-            }
+            const cells = grid.children;
 
+            // Отримуємо стан клітинки, на яку клікнули (Ціль)
+            const targetState = getCellState(startCell);
+
+            // Якщо клікаємо тим самим, що вже є - виходимо
+            const newState = { color: color, shape: shape };
+            // Для трикутника колір в borderBottomColor
+            if(shape === 'triangle') newState.color = color; 
+            else newState.color = color;
+
+            // Проста перевірка: якщо колір і форма вже такі самі
+            if (shapesMatch(targetState.shape, shape) && colorsMatch(targetState.color, color, shape)) {
+                return;
+            }
 
             const stack = [startIndex];
             const visited = new Set();
             visited.add(startIndex);
-
-            const cells = grid.children;
 
             while(stack.length > 0) {
                 const idx = stack.pop();
@@ -446,53 +429,65 @@
                 // Фарбуємо
                 paintCell(cell);
 
-                // Сусіди
                 const neighbors = [
-                    idx - 1, // Left
-                    idx + 1, // Right
-                    idx - cols, // Top
-                    idx + cols // Bottom
+                    idx - 1, idx + 1,
+                    idx - cols, idx + cols
                 ];
 
                 for(let nIdx of neighbors) {
                     if(nIdx >= 0 && nIdx < cols*rows && !visited.has(nIdx)) {
-                        // Перевірка меж (щоб не перестрибувати рядки)
                         const row = Math.floor(idx / cols);
                         const nRow = Math.floor(nIdx / cols);
-                        
-                        // Ліво/Право мають бути в тому ж рядку
                         if (Math.abs(idx - nIdx) === 1 && row !== nRow) continue;
 
                         const nCell = cells[nIdx];
-                        
-                        // Перевіряємо чи збігається колір і форма сусіда з цільовим
-                        let match = false;
-                        const nColor = nCell.style.background || '#E0F7FA';
-                        const nShape = nCell.classList.contains('triangle') ? 'triangle' : 
-                                       (nCell.classList.contains('circle') ? 'circle' : 'square');
-                        
-                        // Логіка порівняння кольорів
-                        let colorMatch = false;
-                        if (nShape === 'triangle') {
-                             colorMatch = (targetShape === 'triangle') && (nCell.style.borderBottomColor === (startCell.style.borderBottomColor || targetColor));
-                        } else {
-                             colorMatch = (targetShape !== 'triangle') && (nColor === targetColor);
-                        }
-                        
-                        // Спеціальний випадок для порожньої клітинки
-                        if (targetColor === '#E0F7FA' && targetShape === 'square' && nColor === '#E0F7FA' && nShape === 'square') {
-                             match = true;
-                        } else if (colorMatch && nShape === targetShape) {
-                             match = true;
-                        }
+                        const nState = getCellState(nCell);
 
-                        if(match) {
+                        // Якщо стан сусіда збігається з станом клітинки, на яку клікнули
+                        if (shapesMatch(nState.shape, targetState.shape) && 
+                            colorsMatch(nState.color, targetState.color, nState.shape)) {
                             visited.add(nIdx);
                             stack.push(nIdx);
                         }
                     }
                 }
             }
+        }
+
+        // Допоміжні функції для порівняння
+        function getCellState(cell) {
+            // Якщо style.background пустий, беремо значення з CSS (яке ми знаємо - #E0F7FA)
+            let c = cell.style.background;
+            if (!c || c === 'transparent') {
+                // Для трикутників беремо колір бордера
+                if (cell.classList.contains('triangle')) {
+                     c = cell.style.borderBottomColor;
+                     if(!c) c = '#E0F7FA'; // Дефолт якщо бордера немає
+                } else {
+                     c = '#E0F7FA'; // Дефолт фону
+                }
+            }
+            
+            let s = 'square';
+            if (cell.classList.contains('circle')) s = 'circle';
+            if (cell.classList.contains('triangle')) s = 'triangle';
+
+            return { color: c, shape: s };
+        }
+
+        function shapesMatch(s1, s2) { return s1 === s2; }
+        
+        function colorsMatch(c1, c2, shapeType) {
+            // Тут можна додати конвертацію RGB -> HEX, якщо браузер повертає rgb()
+            // Але зазвичай, якщо ми задаємо HEX, він його і повертає, окрім деяких випадків.
+            // Для надійності спростимо: якщо обидва "порожні" або однакові
+            if (c1 === c2) return true;
+            
+            // Спеціальна перевірка для фону
+            const isBg = (val) => (!val || val === '#E0F7FA' || val === 'transparent' || val === 'rgba(0, 0, 0, 0)');
+            if (isBg(c1) && isBg(c2)) return true;
+
+            return false;
         }
 
         function updatePreviews(){
@@ -506,7 +501,7 @@
             if(confirm('Очистити все поле?')){
                 document.querySelectorAll('.cell').forEach(c => {
                     c.className = 'cell square';
-                    c.style.background = '#E0F7FA';
+                    c.style.background = ''; // Повне скидання
                     c.style.borderBottom = '';
                 });
             }

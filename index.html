@@ -37,41 +37,43 @@
             z-index: 500;
         }
         
+        /* 🔥 НОВИЙ КОД - БЕЗ ПРОКРУТКИ */
         .color-panel {
             background: rgba(255, 255, 255, 0.95);
-            padding: 8px 8px 16px 8px; /* Більше місця знизу для скролу */
+            padding: 12px;
             border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            max-width: 95vw;
-            overflow-x: auto;
-            white-space: nowrap;
-            scroll-behavior: smooth;
+            width: 96vw;
+            max-width: 1100px;
+            overflow: visible; /* Прибрали прокрутку */
         }
-        /* Завжди видима прокрутка */
-        .color-panel::-webkit-scrollbar {
-            height: 8px;
+
+        .color-picker {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap; /* Кольори переходять на новий рядок */
         }
-        .color-panel::-webkit-scrollbar-track {
-            background: rgba(0,0,0,0.1);
-            border-radius: 4px;
-            margin: 0 4px;
+
+        .color-btn {
+            width: 28px;
+            height: 28px;
+            border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.15s;
+            flex-shrink: 0;
+            user-select: none;
         }
-        .color-panel::-webkit-scrollbar-thumb {
-            background: rgba(0,0,0,0.4);
-            border-radius: 4px;
+        .color-btn:hover { transform: scale(1.25); z-index: 10; position: relative; }
+        .color-btn.active {
+            border-color: white;
+            box-shadow: 0 0 0 2px #333;
+            transform: scale(1.15);
         }
-        .color-panel::-webkit-scrollbar-thumb:hover {
-            background: rgba(0,0,0,0.6);
-        }
-        /* Firefox */
-        .color-panel {
-            scrollbar-width: thin;
-            scrollbar-color: rgba(0,0,0,0.4) rgba(0,0,0,0.1);
-        }
-        
-        .color-btn[title] {
-            position: relative;
-        }
+
+        .color-btn[title] { position: relative; }
         .color-btn[title]:hover::after {
             content: attr(title);
             position: absolute;
@@ -87,28 +89,7 @@
             pointer-events: none;
             z-index: 2000;
         }
-
-        .color-picker {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-        }
-        .color-btn {
-            width: 30px;
-            height: 30px;
-            border: 2px solid rgba(0,0,0,0.1);
-            border-radius: 50%;
-            cursor: pointer;
-            transition: transform 0.1s;
-            flex-shrink: 0;
-            user-select: none; /* Заборона виділення */
-        }
-        .color-btn:hover { transform: scale(1.2); z-index: 10; position: relative; }
-        .color-btn.active {
-            border-color: white;
-            box-shadow: 0 0 0 2px #333;
-            transform: scale(1.15);
-        }
+        /* 🔥 КІНЕЦЬ НОВОГО КОДУ */
         
         .shape-panel {
             background: rgba(255, 255, 255, 0.95);
@@ -274,7 +255,7 @@
 
         document.querySelectorAll('.color-btn[data-c]').forEach(btn => {
             btn.onclick = function(e){
-                e.stopPropagation(); // Запобігає спливанню події
+                e.stopPropagation();
                 document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 color = this.dataset.c;
@@ -284,7 +265,7 @@
 
         document.querySelectorAll('.shape-btn').forEach(btn => {
             btn.onclick = function(e){
-                e.stopPropagation(); // Запобігає спливанню події
+                e.stopPropagation();
                 document.querySelectorAll('.shape-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 shape = this.dataset.s;

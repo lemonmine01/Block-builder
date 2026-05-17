@@ -164,14 +164,19 @@
             border-left: 12px solid transparent; border-right: 12px solid transparent;
             border-bottom: 25px solid;
         }
+        /* Стиль для попереднього перегляду лінії */
+        .cell.line-preview {
+            opacity: 0.5 !important;
+            transition: opacity 0.1s;
+        }
     </style>
 </head>
 <body>
-    <h1> Block Builder Ultimate</h1>
+    <h1>🎮 Block Builder Ultimate</h1>
     
     <div class="tabs">
-        <button class="tab-btn active" data-tab="user">🎨 Користувацькі</button>
-        <button class="tab-btn" data-tab="private"> Приватні</button>
+        <button class="tab-btn active" data-tab="user"> Користувацькі</button>
+        <button class="tab-btn" data-tab="private">🔒 Приватні</button>
     </div>
 
     <div class="toolbar">
@@ -222,7 +227,7 @@
                     <button class="color-btn" style="background:#ff40f2" data-c="#ff40f2" title="Ніжний рожевий"></button>
                     <div style="width:8px;"></div>
                     
-                    <!--  ОСНОВНІ (7) -->
+                    <!-- 🔴 ОСНОВНІ (7) -->
                     <button class="color-btn" style="background:#ff0000" data-c="#ff0000" title="Червоний"></button>
                     <button class="color-btn" style="background:#ff8800" data-c="#ff8800" title="Помаранчевий"></button>
                     <button class="color-btn" style="background:#ffde00" data-c="#ffde00" title="Жовтий"></button>
@@ -262,7 +267,7 @@
                     <button class="color-btn" style="background:#40003c" data-c="#40003c" title="Мутний рожевий"></button>
                     <div style="width:8px;"></div>
                     
-                    <!-- ⚪ НЕЙТРАЛЬНІ (5) -->
+                    <!--  НЕЙТРАЛЬНІ (5) -->
                     <button class="color-btn" style="background:#ffffff" data-c="#ffffff" title="Білий"></button>
                     <button class="color-btn" style="background:#bfbfbf" data-c="#bfbfbf" title="Світло-сірий"></button>
                     <button class="color-btn" style="background:#808080" data-c="#808080" title="Сірий"></button>
@@ -289,7 +294,7 @@
             <div class="private-panel">
                 <h3 style="color:#333;">Створи свій колір</h3>
                 <input type="color" id="colorPicker" class="color-picker-input" value="#ff4a00">
-                <button class="save-btn" onclick="saveCustomColor()"> Зберегти колір</button>
+                <button class="save-btn" onclick="saveCustomColor()">💾 Зберегти колір</button>
                 <div class="custom-colors-grid" id="customColors"></div>
             </div>
         </div>
@@ -305,6 +310,7 @@
                 <div class="btn-icon" id="btn-bucket" title="Відро">🪣</div>
                 <div class="btn-icon" id="btn-eraser" title="Ластик">🧽</div>
                 <div class="btn-icon" id="btn-pipette" title="Піпетка">💉</div>
+                <div class="btn-icon" id="btn-line" title="Лінія">📏</div>
             </div>
         </div>
     </div>
@@ -326,15 +332,99 @@
         const cols = 30, rows = 22;
         const cellSize = 25, gap = 1;
 
+        // 📏 ЛОГІКА ЛІНІЇ
+        let lineStartIdx = null;
+        let isLineDrawing = false;
+        let lastHoveredIdx = null;
+        let linePreviewCells = [];
+
         for(let i=0; i<cols*rows; i++){
             const cell = document.createElement('div');
             cell.className = 'cell square';
             cell.dataset.index = i;
-            cell.onmousedown = () => { isPainting=true; handleTool(cell); };
-            cell.onmouseenter = () => { if(isPainting) handleTool(cell); };
+            
+            cell.onmousedown = () => {
+                if(currentTool === 'line') {
+                    isLineDrawing = true;
+                    lineStartIdx = i;
+                    linePreviewCells = [];
+                    lastHoveredIdx = i;
+                } else {
+                    isPainting = true;
+                    handleTool(cell);
+                }
+            };
+            
+            cell.onmouseenter = () => {
+                if(currentTool === 'line' && isLineDrawing) {
+                    lastHoveredIdx = i;
+                    drawLinePreview(i);
+                } else if(isPainting && currentTool !== 'line') {
+                    handleTool(cell);
+                }
+            };
+            
             grid.appendChild(cell);
         }
-        document.onmouseup = () => isPainting = false;
+        
+        document.onmouseup = () => {
+            if(isLineDrawing) {
+                finalizeLine();
+                isLineDrawing = false;
+                lineStartIdx = null;
+                lastHoveredIdx = null;
+                clearLinePreview();
+            }
+            isPainting = false;
+        };
+
+        function getLineIndices(idx1, idx2) {
+            const x1 = idx1 % cols, y1 = Math.floor(idx1 / cols);
+            const x2 = idx2 % cols, y2 = Math.floor(idx2 / cols);
+            const indices = [];
+            const dx = Math.abs(x2 - x1), dy = Math.abs(y2 - y1);
+            const sx = x1 < x2 ? 1 : -1, sy = y1 < y2 ? 1 : -1;
+            let err = dx - dy;
+            let cx = x1, cy = y1;
+            while(true) {
+                indices.push(cy * cols + cx);
+                if(cx === x2 && cy === y2) break;
+                const e2 = 2 * err;
+                if(e2 > -dy) { err -= dy; cx += sx; }
+                if(e2 < dx) { err += dx; cy += sy; }
+            }
+            return indices;
+        }
+
+        function drawLinePreview(endIdx) {
+            clearLinePreview();
+            linePreviewCells = getLineIndices(lineStartIdx, endIdx);
+            linePreviewCells.forEach(idx => {
+                const c = grid.children[idx];
+                if(!c.classList.contains('line-preview')) {
+                    c.style.opacity = '0.4';
+                    c.classList.add('line-preview');
+                }
+            });
+        }
+
+        function clearLinePreview() {
+            linePreviewCells.forEach(idx => {
+                const c = grid.children[idx];
+                c.style.opacity = '';
+                c.classList.remove('line-preview');
+            });
+            linePreviewCells = [];
+        }
+
+        function finalizeLine() {
+            const endIdx = lastHoveredIdx !== null ? lastHoveredIdx : lineStartIdx;
+            const indices = getLineIndices(lineStartIdx, endIdx);
+            indices.forEach(idx => {
+                paintCell(grid.children[idx]);
+            });
+            clearLinePreview();
+        }
 
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.onclick = () => {
@@ -363,14 +453,14 @@
                 document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 color = this.dataset.c;
-                if(currentTool === 'pipette') setTool('draw');
+                if(currentTool === 'pipette' || currentTool === 'line') setTool('draw');
                 updatePreviews();
             }
         });
 
         document.getElementById('colorPicker').addEventListener('input', (e) => {
             color = e.target.value;
-            if(currentTool === 'pipette') setTool('draw');
+            if(currentTool === 'pipette' || currentTool === 'line') setTool('draw');
             updatePreviews();
         });
 
@@ -414,6 +504,7 @@
         document.getElementById('btn-bucket').onclick = () => setTool('bucket');
         document.getElementById('btn-eraser').onclick = () => setTool('eraser');
         document.getElementById('btn-pipette').onclick = () => setTool('pipette');
+        document.getElementById('btn-line').onclick = () => setTool('line');
 
         function setTool(tool) {
             currentTool = tool;
@@ -421,6 +512,7 @@
             document.getElementById('btn-bucket').classList.toggle('active', tool==='bucket');
             document.getElementById('btn-eraser').classList.toggle('active', tool==='eraser');
             document.getElementById('btn-pipette').classList.toggle('active', tool==='pipette');
+            document.getElementById('btn-line').classList.toggle('active', tool==='line');
             if(tool !== 'draw') {
                 document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
             } else {
@@ -436,7 +528,6 @@
             else if(currentTool === 'pipette') pickColor(cell);
         }
 
-        // 💉 ПІПЕТКА - ВИБІР КОЛЬОРУ
         function pickColor(cell) {
             if (cell.classList.contains('triangle')) {
                 const triangleColor = cell.style.borderBottomColor;
@@ -452,7 +543,6 @@
                 }
             }
             
-            // Активувати відповідну кнопку в палітрі
             document.querySelectorAll('.color-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if (btn.dataset.c.toLowerCase() === color.toLowerCase()) {
@@ -460,22 +550,17 @@
                 }
             });
             
-            // Перемкнутися на інструмент малювання
             setTool('draw');
             updatePreviews();
         }
 
-        // Допоміжна функція: RGB to Hex
         function rgbToHex(rgb) {
             if (rgb.startsWith('#')) return rgb;
-            
             const rgbValues = rgb.match(/\d+/g);
             if (!rgbValues || rgbValues.length < 3) return '#000000';
-            
             const r = parseInt(rgbValues[0]).toString(16).padStart(2, '0');
             const g = parseInt(rgbValues[1]).toString(16).padStart(2, '0');
             const b = parseInt(rgbValues[2]).toString(16).padStart(2, '0');
-            
             return `#${r}${g}${b}`;
         }
 
@@ -534,14 +619,12 @@
             }
         }
 
-        // 💾 ЕКСПОРТ У PNG
         function exportDrawing() {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             canvas.width = cols * (cellSize + gap) - gap;
             canvas.height = rows * (cellSize + gap) - gap;
 
-            // Фон
             ctx.fillStyle = '#E0F7FA';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 

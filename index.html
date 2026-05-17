@@ -304,6 +304,7 @@
                 <div class="btn-icon active" id="btn-draw" title="Пензлик">✏️</div>
                 <div class="btn-icon" id="btn-bucket" title="Відро">🪣</div>
                 <div class="btn-icon" id="btn-eraser" title="Ластик">🧽</div>
+                <div class="btn-icon" id="btn-pipette" title="Піпетка">💉</div>
             </div>
         </div>
     </div>
@@ -330,7 +331,7 @@
             cell.className = 'cell square';
             cell.dataset.index = i;
             cell.onmousedown = () => { isPainting=true; handleTool(cell); };
-            cell.onmouseenter = () => { if(isPainting && currentTool !== 'bucket') handleTool(cell); };
+            cell.onmouseenter = () => { if(isPainting) handleTool(cell); };
             grid.appendChild(cell);
         }
         document.onmouseup = () => isPainting = false;
@@ -362,13 +363,14 @@
                 document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 color = this.dataset.c;
+                if(currentTool === 'pipette') setTool('draw');
                 updatePreviews();
-                if(currentTool === 'eraser') setTool('draw');
             }
         });
 
         document.getElementById('colorPicker').addEventListener('input', (e) => {
             color = e.target.value;
+            if(currentTool === 'pipette') setTool('draw');
             updatePreviews();
         });
 
@@ -411,12 +413,14 @@
         document.getElementById('btn-draw').onclick = () => setTool('draw');
         document.getElementById('btn-bucket').onclick = () => setTool('bucket');
         document.getElementById('btn-eraser').onclick = () => setTool('eraser');
+        document.getElementById('btn-pipette').onclick = () => setTool('pipette');
 
         function setTool(tool) {
             currentTool = tool;
             document.getElementById('btn-draw').classList.toggle('active', tool==='draw');
             document.getElementById('btn-bucket').classList.toggle('active', tool==='bucket');
             document.getElementById('btn-eraser').classList.toggle('active', tool==='eraser');
+            document.getElementById('btn-pipette').classList.toggle('active', tool==='pipette');
             if(tool !== 'draw') {
                 document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
             } else {
@@ -429,6 +433,50 @@
             if(currentTool === 'draw') paintCell(cell);
             else if(currentTool === 'eraser') eraseCell(cell);
             else if(currentTool === 'bucket') { floodFill(cell); isPainting = false; }
+            else if(currentTool === 'pipette') pickColor(cell);
+        }
+
+        // 💉 ПІПЕТКА - ВИБІР КОЛЬОРУ
+        function pickColor(cell) {
+            if (cell.classList.contains('triangle')) {
+                const triangleColor = cell.style.borderBottomColor;
+                if (triangleColor && triangleColor !== 'transparent' && triangleColor !== '') {
+                    color = rgbToHex(triangleColor);
+                }
+            } else {
+                const cellColor = cell.style.background;
+                if (cellColor && cellColor !== 'transparent' && cellColor !== '') {
+                    color = rgbToHex(cellColor);
+                } else if (cell.classList.contains('square') || cell.classList.contains('circle')) {
+                    color = '#E0F7FA';
+                }
+            }
+            
+            // Активувати відповідну кнопку в палітрі
+            document.querySelectorAll('.color-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.c.toLowerCase() === color.toLowerCase()) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Перемкнутися на інструмент малювання
+            setTool('draw');
+            updatePreviews();
+        }
+
+        // Допоміжна функція: RGB to Hex
+        function rgbToHex(rgb) {
+            if (rgb.startsWith('#')) return rgb;
+            
+            const rgbValues = rgb.match(/\d+/g);
+            if (!rgbValues || rgbValues.length < 3) return '#000000';
+            
+            const r = parseInt(rgbValues[0]).toString(16).padStart(2, '0');
+            const g = parseInt(rgbValues[1]).toString(16).padStart(2, '0');
+            const b = parseInt(rgbValues[2]).toString(16).padStart(2, '0');
+            
+            return `#${r}${g}${b}`;
         }
 
         function paintCell(cell) {

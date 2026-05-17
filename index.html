@@ -129,25 +129,21 @@
             border-left: 9px solid transparent; border-right: 9px solid transparent;
             border-bottom: 18px solid #ff4a00;
         }
-        .clear-btn {
-            background: #ff4757; color: white; border: none;
-            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
+        .action-btn {
+            padding: 6px 12px; border: none; border-radius: 6px; 
+            cursor: pointer; font-weight: bold; color: white; font-size: 13px;
         }
+        .btn-clear { background: #ff4757; }
+        .btn-export { background: #4CAF50; }
+        .btn-ref { background: #2196F3; }
         
-        /* Стилі для завантаженого зображення */
         #ref-container {
-            display: none; 
-            margin-top: 15px; 
-            text-align: center;
-            background: rgba(0,0,0,0.3);
-            padding: 10px;
-            border-radius: 12px;
+            display: none; margin-top: 15px; text-align: center;
+            background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px;
         }
         #ref-image {
-            max-width: 90vw; 
-            max-height: 200px;
-            border: 3px solid white; 
-            border-radius: 8px; 
+            max-width: 90vw; max-height: 200px;
+            border: 3px solid white; border-radius: 8px; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         .ref-label { color: white; font-size: 12px; margin-top: 5px; }
@@ -179,11 +175,10 @@
     </div>
 
     <div class="toolbar">
-        <!-- КОРИСТУВАЦЬКІ КОЛЬОРИ -->
         <div id="panel-user" class="panel active">
             <div class="color-panel">
                 <div class="color-picker">
-                    <!-- 🌈 НЕОСНОВНІ (11) -->
+                    <!--  НЕОСНОВНІ (11) -->
                     <button class="color-btn active" style="background:#ff4a00" data-c="#ff4a00" title="Вогняний червоний"></button>
                     <button class="color-btn" style="background:#ff6300" data-c="#ff6300" title="Вогняний"></button>
                     <button class="color-btn" style="background:#ffad00" data-c="#ffad00" title="Вогняний жовтий"></button>
@@ -281,20 +276,20 @@
                     <button class="color-btn" style="background:#b5823f" data-c="#b5823f" title="Молочний шоколад"></button>
                     <div style="width:10px;"></div>
                     
-                    <!-- КНОПКИ -->
-                    <button class="clear-btn" onclick="clearGrid()">🗑️ Очистити</button>
-                    <button class="clear-btn" style="background:#2196F3;" onclick="document.getElementById('imgLoader').click()">📷 Завантажити зразок</button>
+                    <!-- КНОПКИ ДІЙ -->
+                    <button class="action-btn btn-clear" onclick="clearGrid()">🗑️ Очистити</button>
+                    <button class="action-btn btn-export" onclick="exportDrawing()">💾 Завантажити PNG</button>
+                    <button class="action-btn btn-ref" onclick="document.getElementById('imgLoader').click()">📷 Зразок</button>
                     <input type="file" id="imgLoader" accept="image/*" style="display:none">
                 </div>
             </div>
         </div>
 
-        <!-- ПРИВАТНІ КОЛЬОРИ -->
         <div id="panel-private" class="panel">
             <div class="private-panel">
                 <h3 style="color:#333;">Створи свій колір</h3>
                 <input type="color" id="colorPicker" class="color-picker-input" value="#ff4a00">
-                <button class="save-btn" onclick="saveCustomColor()">💾 Зберегти колір</button>
+                <button class="save-btn" onclick="saveCustomColor()"> Зберегти колір</button>
                 <div class="custom-colors-grid" id="customColors"></div>
             </div>
         </div>
@@ -313,7 +308,6 @@
         </div>
     </div>
 
-    <!-- СЮДИ ПОКАЖЕ ЗРАЗОК -->
     <div id="ref-container">
         <img id="ref-image" src="">
         <div class="ref-label">👆 Дивись сюди і малюй!</div>
@@ -329,6 +323,7 @@
         let customColors = JSON.parse(localStorage.getItem('customColors')) || [];
         const grid = document.getElementById('grid');
         const cols = 30, rows = 22;
+        const cellSize = 25, gap = 1;
 
         for(let i=0; i<cols*rows; i++){
             const cell = document.createElement('div');
@@ -340,7 +335,6 @@
         }
         document.onmouseup = () => isPainting = false;
 
-        // 🔥 ВКЛАДКИ
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -350,7 +344,6 @@
             }
         });
 
-        //  ЛОГІКА ЗАВАНТАЖЕННЯ КАРТИНКИ
         document.getElementById('imgLoader').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if(file) {
@@ -363,7 +356,6 @@
             }
         });
 
-        //  КОЛЬОРИ
         document.querySelectorAll('.color-btn[data-c]').forEach(btn => {
             btn.onclick = function(e){
                 e.stopPropagation();
@@ -375,7 +367,6 @@
             }
         });
 
-        //  ПРИВАТНІ - збереження кольору
         document.getElementById('colorPicker').addEventListener('input', (e) => {
             color = e.target.value;
             updatePreviews();
@@ -407,7 +398,6 @@
         }
         renderCustomColors();
 
-        // 🔷 ФІГУРИ
         document.querySelectorAll('.shape-panel .btn-icon').forEach(btn => {
             btn.onclick = function(e){
                 e.stopPropagation();
@@ -418,7 +408,6 @@
             }
         });
 
-        //  ІНСТРУМЕНТИ
         document.getElementById('btn-draw').onclick = () => setTool('draw');
         document.getElementById('btn-bucket').onclick = () => setTool('bucket');
         document.getElementById('btn-eraser').onclick = () => setTool('eraser');
@@ -495,6 +484,52 @@
                     }
                 }
             }
+        }
+
+        // 💾 ЕКСПОРТ У PNG
+        function exportDrawing() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = cols * (cellSize + gap) - gap;
+            canvas.height = rows * (cellSize + gap) - gap;
+
+            // Фон
+            ctx.fillStyle = '#E0F7FA';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach((cell, i) => {
+                const col = i % cols;
+                const row = Math.floor(i / cols);
+                const x = col * (cellSize + gap);
+                const y = row * (cellSize + gap);
+
+                if (cell.classList.contains('square')) {
+                    ctx.fillStyle = cell.style.background || '#E0F7FA';
+                    if (ctx.fillStyle === 'transparent') ctx.fillStyle = '#E0F7FA';
+                    ctx.fillRect(x, y, cellSize, cellSize);
+                } else if (cell.classList.contains('circle')) {
+                    ctx.fillStyle = cell.style.background || '#E0F7FA';
+                    if (ctx.fillStyle === 'transparent') ctx.fillStyle = '#E0F7FA';
+                    ctx.beginPath();
+                    ctx.arc(x + cellSize/2, y + cellSize/2, cellSize/2, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (cell.classList.contains('triangle')) {
+                    ctx.fillStyle = cell.style.borderBottomColor || '#E0F7FA';
+                    if (ctx.fillStyle === 'transparent') ctx.fillStyle = '#E0F7FA';
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x + cellSize, y);
+                    ctx.lineTo(x + cellSize/2, y + cellSize);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+            });
+
+            const link = document.createElement('a');
+            link.download = 'BlockBuilder_Ultimate.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
         }
 
         function updatePreviews(){

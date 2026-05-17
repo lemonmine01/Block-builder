@@ -134,6 +134,24 @@
             padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
         }
         
+        /* Стилі для завантаженого зображення */
+        #ref-container {
+            display: none; 
+            margin-top: 15px; 
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 12px;
+        }
+        #ref-image {
+            max-width: 90vw; 
+            max-height: 200px;
+            border: 3px solid white; 
+            border-radius: 8px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .ref-label { color: white; font-size: 12px; margin-top: 5px; }
+
         #grid {
             display: grid; grid-template-columns: repeat(30, 25px);
             grid-template-rows: repeat(22, 25px); gap: 1px;
@@ -153,11 +171,11 @@
     </style>
 </head>
 <body>
-    <h1>🎮 Block Builder Ultimate</h1>
+    <h1> Block Builder Ultimate</h1>
     
     <div class="tabs">
         <button class="tab-btn active" data-tab="user">🎨 Користувацькі</button>
-        <button class="tab-btn" data-tab="private">🔒 Приватні</button>
+        <button class="tab-btn" data-tab="private"> Приватні</button>
     </div>
 
     <div class="toolbar">
@@ -189,7 +207,7 @@
                     <button class="color-btn" style="background:#ffbffb" data-c="#ffbffb" title="Рожева класика"></button>
                     <div style="width:8px;"></div>
                     
-                    <!-- 🤍 СВІТЛІ (7) -->
+                    <!--  СВІТЛІ (7) -->
                     <button class="color-btn" style="background:#ff8080" data-c="#ff8080" title="Світлий кавун"></button>
                     <button class="color-btn" style="background:#ffc380" data-c="#ffc380" title="Бежевий"></button>
                     <button class="color-btn" style="background:#ffee80" data-c="#ffee80" title="Лимонний"></button>
@@ -209,7 +227,7 @@
                     <button class="color-btn" style="background:#ff40f2" data-c="#ff40f2" title="Ніжний рожевий"></button>
                     <div style="width:8px;"></div>
                     
-                    <!-- 🔴 ОСНОВНІ (7) -->
+                    <!--  ОСНОВНІ (7) -->
                     <button class="color-btn" style="background:#ff0000" data-c="#ff0000" title="Червоний"></button>
                     <button class="color-btn" style="background:#ff8800" data-c="#ff8800" title="Помаранчевий"></button>
                     <button class="color-btn" style="background:#ffde00" data-c="#ffde00" title="Жовтий"></button>
@@ -262,7 +280,11 @@
                     <button class="color-btn" style="background:#f3f3f3" data-c="#f3f3f3" title="Срібло"></button>
                     <button class="color-btn" style="background:#b5823f" data-c="#b5823f" title="Молочний шоколад"></button>
                     <div style="width:10px;"></div>
-                    <button class="clear-btn" onclick="clearGrid()">🗑️</button>
+                    
+                    <!-- КНОПКИ -->
+                    <button class="clear-btn" onclick="clearGrid()">🗑️ Очистити</button>
+                    <button class="clear-btn" style="background:#2196F3;" onclick="document.getElementById('imgLoader').click()">📷 Завантажити зразок</button>
+                    <input type="file" id="imgLoader" accept="image/*" style="display:none">
                 </div>
             </div>
         </div>
@@ -289,6 +311,12 @@
                 <div class="btn-icon" id="btn-eraser" title="Ластик">🧽</div>
             </div>
         </div>
+    </div>
+
+    <!-- СЮДИ ПОКАЖЕ ЗРАЗОК -->
+    <div id="ref-container">
+        <img id="ref-image" src="">
+        <div class="ref-label">👆 Дивись сюди і малюй!</div>
     </div>
 
     <div id="grid"></div>
@@ -322,7 +350,20 @@
             }
         });
 
-        // 🎨 КОЛЬОРИ
+        //  ЛОГІКА ЗАВАНТАЖЕННЯ КАРТИНКИ
+        document.getElementById('imgLoader').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('ref-image').src = event.target.result;
+                    document.getElementById('ref-container').style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        //  КОЛЬОРИ
         document.querySelectorAll('.color-btn[data-c]').forEach(btn => {
             btn.onclick = function(e){
                 e.stopPropagation();
@@ -334,7 +375,7 @@
             }
         });
 
-        // 🔒 ПРИВАТНІ - збереження кольору
+        //  ПРИВАТНІ - збереження кольору
         document.getElementById('colorPicker').addEventListener('input', (e) => {
             color = e.target.value;
             updatePreviews();
@@ -377,7 +418,7 @@
             }
         });
 
-        // 🛠 ІНСТРУМЕНТИ
+        //  ІНСТРУМЕНТИ
         document.getElementById('btn-draw').onclick = () => setTool('draw');
         document.getElementById('btn-bucket').onclick = () => setTool('bucket');
         document.getElementById('btn-eraser').onclick = () => setTool('eraser');

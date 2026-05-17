@@ -313,11 +313,19 @@
         }
 
         function undo() {
-            if (historyIndex > 0) { historyIndex--; applyGridState(history[historyIndex]); updateUndoRedoUI(); }
+            if (historyIndex > 0) {
+                historyIndex--;
+                applyGridState(history[historyIndex]);
+                updateUndoRedoUI();
+            }
         }
 
         function redo() {
-            if (historyIndex < history.length - 1) { historyIndex++; applyGridState(history[historyIndex]); updateUndoRedoUI(); }
+            if (historyIndex < history.length - 1) {
+                historyIndex++;
+                applyGridState(history[historyIndex]);
+                updateUndoRedoUI();
+            }
         }
 
         function updateUndoRedoUI() {
@@ -326,7 +334,7 @@
         }
 
         //  ФІГУРИ (ПРЯМОКУТНИК / КОЛО)
-        let shapeToolType = null; // 'rect' or 'circle'
+        let shapeToolType = null;
         let shapeStartIdx = null;
         let isShapeDrawing = false;
         let shapePreviewCells = [];
@@ -376,6 +384,7 @@
         }
 
         function finalizeShape(endIdx) {
+            if(!shapeStartIdx) return;
             const indices = getCellsInBounds(shapeStartIdx, endIdx, shapeToolType);
             indices.forEach(idx => paintCell(grid.children[idx]));
             clearShapePreview();
@@ -390,24 +399,16 @@
             
             cell.onmousedown = (e) => {
                 e.preventDefault();
-                if(currentTool === 'line' || currentTool === 'rect' || currentTool === 'circle') {
+                if(['line', 'rect', 'circle'].includes(currentTool)) {
                     isPainting = true;
-                    if(currentTool === 'line') lineStartIdx = i;
-                    else { shapeToolType = currentTool; shapeStartIdx = i; }
+                    if(currentTool === 'line') {
+                        lineStartIdx = i;
+                    } else {
+                        shapeToolType = currentTool;
+                        shapeStartIdx = i;
+                    }
                 } else {
                     isPainting = true;
-                    handleTool(cell);
-                }
-            };
-            
-            cell.onmouseenter = () => {
-                const idx = parseInt(cell.dataset.index);
-                if(currentTool === 'line' && isPainting && lineStartIdx !== null) {
-                    lastHoveredIdx = idx;
-                    drawLinePreview(idx);
-                } else if((currentTool === 'rect' || currentTool === 'circle') && isPainting && shapeStartIdx !== null) {
-                    drawShapePreview(idx);
-                } else if(isPainting && !['line','rect','circle'].includes(currentTool)) {
                     handleTool(cell);
                 }
             };
@@ -415,9 +416,32 @@
             grid.appendChild(cell);
         }
         
+        // Глобальний mousemove на grid
+        grid.onmousemove = (e) => {
+            if(!isPainting) return;
+            
+            const cell = e.target;
+            if(!cell.classList.contains('cell')) return;
+            
+            const idx = parseInt(cell.dataset.index);
+            
+            if(currentTool === 'line' && lineStartIdx !== null) {
+                lastHoveredIdx = idx;
+                drawLinePreview(idx);
+            } else if((currentTool === 'rect' || currentTool === 'circle') && shapeStartIdx !== null) {
+                drawShapePreview(idx);
+            } else if(currentTool !== 'line' && currentTool !== 'rect' && currentTool !== 'circle') {
+                handleTool(cell);
+            }
+        };
+        
         document.onmouseup = () => {
-            if(currentTool === 'line' && isPainting) finalizeLine();
-            if((currentTool === 'rect' || currentTool === 'circle') && isPainting) finalizeShape(lastHoveredIdx || shapeStartIdx);
+            if(currentTool === 'line' && isPainting) {
+                finalizeLine();
+            }
+            if((currentTool === 'rect' || currentTool === 'circle') && isPainting) {
+                finalizeShape(lastHoveredIdx !== null ? lastHoveredIdx : shapeStartIdx);
+            }
             isPainting = false;
             lineStartIdx = null;
             shapeStartIdx = null;
@@ -471,6 +495,7 @@
         }
 
         function finalizeLine() {
+            if(!lineStartIdx) return;
             const endIdx = lastHoveredIdx !== null ? lastHoveredIdx : lineStartIdx;
             const indices = getLineIndices(lineStartIdx, endIdx);
             indices.forEach(idx => paintCell(grid.children[idx]));
@@ -579,10 +604,16 @@
         }
 
         function handleTool(cell) {
-            if(currentTool === 'draw') paintCell(cell);
-            else if(currentTool === 'eraser') eraseCell(cell);
-            else if(currentTool === 'bucket') { floodFill(cell); saveState(); }
-            else if(currentTool === 'pipette') pickColor(cell);
+            if(currentTool === 'draw') {
+                paintCell(cell);
+            } else if(currentTool === 'eraser') {
+                eraseCell(cell);
+            } else if(currentTool === 'bucket') {
+                floodFill(cell);
+                saveState();
+            } else if(currentTool === 'pipette') {
+                pickColor(cell);
+            }
         }
 
         function pickColor(cell) {

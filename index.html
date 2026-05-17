@@ -16,31 +16,30 @@
             padding: 10px;
         }
         h1 { 
-            color: white; margin: 10px 0 10px;
+            color: white; margin: 10px 0 12px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5); 
-            font-size: 26px; text-align: center;
-            position: relative; z-index: 1000;
+            font-size: 24px; text-align: center;
         }
         
-        /*  ВКЛАДКИ */
+        /* 🔥 ВКЛАДКИ */
         .tabs {
-            display: flex; gap: 8px; margin-bottom: 8px;
+            display: flex; gap: 10px; margin-bottom: 10px;
         }
         .tab-btn {
-            padding: 6px 16px; border: none; border-radius: 8px;
-            background: rgba(255,255,255,0.8); cursor: pointer;
-            font-weight: bold; font-size: 14px; transition: all 0.2s;
-            user-select: none;
+            padding: 8px 20px; border: none; border-radius: 10px;
+            background: rgba(255,255,255,0.7); cursor: pointer;
+            font-weight: bold; font-size: 15px; transition: all 0.2s;
+            user-select: none; color: #333;
         }
+        .tab-btn:hover { background: rgba(255,255,255,0.9); }
         .tab-btn.active {
-            background: white; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-            transform: translateY(-2px);
+            background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transform: translateY(-2px); color: #000;
         }
         
         .toolbar {
-            display: flex; flex-direction: column; gap: 8px;
+            display: flex; flex-direction: column; gap: 10px;
             align-items: center; width: 100%;
-            position: relative; z-index: 500;
         }
         
         .panel { display: none; width: 100%; justify-content: center; }
@@ -48,16 +47,16 @@
         
         .color-panel {
             background: rgba(255, 255, 255, 0.95);
-            padding: 10px; border-radius: 12px;
+            padding: 12px; border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             width: 96vw; max-width: 1200px;
         }
         .color-picker {
-            display: flex; gap: 5px; align-items: center;
+            display: flex; gap: 6px; align-items: center;
             justify-content: center; flex-wrap: wrap;
         }
         .color-btn {
-            width: 24px; height: 24px;
+            width: 26px; height: 26px;
             border: 2px solid rgba(0,0,0,0.1); border-radius: 50%;
             cursor: pointer; transition: transform 0.15s;
             flex-shrink: 0; user-select: none; position: relative;
@@ -71,49 +70,43 @@
             content: attr(title); position: absolute;
             bottom: 115%; left: 50%; transform: translateX(-50%);
             background: rgba(0,0,0,0.85); color: white;
-            padding: 3px 6px; border-radius: 4px; font-size: 10px;
+            padding: 4px 8px; border-radius: 4px; font-size: 11px;
             white-space: nowrap; pointer-events: none; z-index: 2000;
         }
 
-        /*  MINECRAFT ПАНЕЛЬ */
-        .mc-panel {
+        /* 🎨 ПРИВАТНІ - колір-пікер */
+        .private-panel {
             background: rgba(255, 255, 255, 0.95);
-            padding: 10px; border-radius: 12px;
+            padding: 20px; border-radius: 12px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            width: 96vw; max-width: 600px;
-            display: flex; flex-wrap: wrap; gap: 8px;
-            justify-content: center; align-items: center;
+            display: flex; flex-direction: column; gap: 15px;
+            align-items: center;
         }
-        .mc-btn {
-            width: 40px; height: 40px; border: 3px solid rgba(0,0,0,0.1);
-            border-radius: 6px; cursor: pointer; transition: all 0.15s;
-            position: relative; overflow: hidden;
+        .color-picker-input {
+            width: 80px; height: 80px; border: none;
+            border-radius: 12px; cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        .mc-btn:hover { transform: scale(1.15); border-color: #fff; }
-        .mc-btn.active {
-            border-color: #333; box-shadow: 0 0 0 3px rgba(0,0,0,0.4);
-            transform: scale(1.1);
+        .custom-colors-grid {
+            display: flex; gap: 8px; flex-wrap: wrap;
+            justify-content: center; max-width: 400px;
         }
-        .mc-btn::after {
-            content: attr(title); position: absolute; bottom: -18px;
-            left: 50%; transform: translateX(-50%); font-size: 9px;
-            background: rgba(0,0,0,0.8); color: white; padding: 1px 4px;
-            border-radius: 3px; white-space: nowrap; opacity: 0;
-            transition: opacity 0.2s; pointer-events: none;
+        .custom-btn {
+            width: 40px; height: 40px;
+            border: 3px solid rgba(0,0,0,0.1); border-radius: 8px;
+            cursor: pointer; transition: all 0.15s;
         }
-        .mc-btn:hover::after { opacity: 1; }
-
-        /* 🎨 ТЕКСТУРИ CSS (Піксельні патерни) */
-        .tex-diorite { background-color: #E0E0E0; background-image: radial-gradient(#fff 15%, transparent 16%), radial-gradient(#fff 15%, transparent 16%); background-size: 6px 6px; background-position: 0 0, 3px 3px; }
-        .tex-oak { background-color: #8F6932; background-image: repeating-linear-gradient(90deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px), repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.1) 3px, rgba(0,0,0,0.1) 4px); background-size: 8px 8px; }
-        .tex-birch { background-color: #D9D9C8; background-image: radial-gradient(#4A4A3A 20%, transparent 21%); background-size: 8px 8px; background-position: 2px 2px, 6px 6px; }
-        .tex-jungle { background-color: #7D5828; background-image: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(160,100,40,0.3) 2px, rgba(160,100,40,0.3) 4px); background-size: 6px 6px; }
-        .tex-acacia { background-color: #9E5E28; background-image: repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(60,30,10,0.4) 4px, rgba(60,30,10,0.4) 5px); background-size: 100% 8px; }
-        .tex-dark-oak { background-color: #4A3318; background-image: repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.3) 2px, rgba(0,0,0,0.3) 3px); background-size: 6px 100%; }
-        .tex-spruce { background-color: #5C4028; background-image: radial-gradient(rgba(0,0,0,0.2) 20%, transparent 21%); background-size: 5px 5px; }
-        .tex-cherry { background-color: #E8C4C4; background-image: radial-gradient(#D48C8C 15%, transparent 16%); background-size: 7px 7px; background-position: 1px 3px, 4px 0px; }
-        .tex-mangrove { background-color: #7A3B25; background-image: repeating-linear-gradient(135deg, transparent, transparent 3px, rgba(100,40,20,0.4) 3px, rgba(100,40,20,0.4) 4px); background-size: 6px 6px; }
-
+        .custom-btn:hover { transform: scale(1.15); border-color: #333; }
+        .custom-btn.active {
+            border-color: #333; box-shadow: 0 0 0 3px rgba(0,0,0,0.3);
+        }
+        .save-btn {
+            padding: 8px 16px; background: #4CAF50; color: white;
+            border: none; border-radius: 8px; cursor: pointer;
+            font-weight: bold; font-size: 14px;
+        }
+        .save-btn:hover { background: #45a049; }
+        
         .panels-group { display: flex; gap: 10px; margin-top: 5px; }
         .shape-panel, .tools-panel {
             background: rgba(255, 255, 255, 0.95); padding: 8px;
@@ -140,7 +133,7 @@
         }
         .clear-btn {
             background: #ff4757; color: white; border: none;
-            padding: 5px 10px; border-radius: 6px; cursor: pointer; font-weight: bold;
+            padding: 6px 12px; border-radius: 6px; cursor: pointer; font-weight: bold;
         }
         
         #grid {
@@ -165,15 +158,16 @@
     <h1>🎮 Block Builder Ultimate</h1>
     
     <div class="tabs">
-        <button class="tab-btn active" data-tab="colors">🎨 Кольори</button>
-        <button class="tab-btn" data-tab="minecraft">️ Minecraft</button>
+        <button class="tab-btn active" data-tab="user">🎨 Користувацькі</button>
+        <button class="tab-btn" data-tab="private">🔒 Приватні</button>
     </div>
 
     <div class="toolbar">
-        <!-- ПАНЕЛЬ КОЛЬОРІВ -->
-        <div id="panel-colors" class="panel active">
+        <!-- КОРИСТУВАЦЬКІ КОЛЬОРИ -->
+        <div id="panel-user" class="panel active">
             <div class="color-panel">
                 <div class="color-picker">
+                    <!-- 🌈 НЕОСНОВНІ -->
                     <button class="color-btn active" style="background:#ff4a00" data-c="#ff4a00" title="Вогняний червоний"></button>
                     <button class="color-btn" style="background:#ff6300" data-c="#ff6300" title="Вогняний"></button>
                     <button class="color-btn" style="background:#ffad00" data-c="#ffad00" title="Вогняний жовтий"></button>
@@ -185,31 +179,9 @@
                     <button class="color-btn" style="background:#5a00ff" data-c="#5a00ff" title="Синьо-фіолетовий"></button>
                     <button class="color-btn" style="background:#e100ff" data-c="#e100ff" title="Фіолетово-рожевий"></button>
                     <button class="color-btn" style="background:#ff0095" data-c="#ff0095" title="Малиновий"></button>
-                    <div style="width:8px;"></div>
-                    <button class="color-btn" style="background:#ffbfbf" data-c="#ffbfbf" title="Переспілий кавун"></button>
-                    <button class="color-btn" style="background:#ffe1bf" data-c="#ffe1bf" title="Ясний помаранчевий"></button>
-                    <button class="color-btn" style="background:#fff7bf" data-c="#fff7bf" title="Переспіла диня"></button>
-                    <button class="color-btn" style="background:#d0ffbf" data-c="#d0ffbf" title="Недоспіла капуста"></button>
-                    <button class="color-btn" style="background:#bfc5ff" data-c="#bfc5ff" title="Синя зоря"></button>
-                    <button class="color-btn" style="background:#e1bfff" data-c="#e1bfff" title="Фіолетове сяйво"></button>
-                    <button class="color-btn" style="background:#ffbffb" data-c="#ffbffb" title="Рожева класика"></button>
-                    <div style="width:8px;"></div>
-                    <button class="color-btn" style="background:#ff8080" data-c="#ff8080" title="Світлий кавун"></button>
-                    <button class="color-btn" style="background:#ffc380" data-c="#ffc380" title="Бежевий"></button>
-                    <button class="color-btn" style="background:#ffee80" data-c="#ffee80" title="Лимонний"></button>
-                    <button class="color-btn" style="background:#a2ff80" data-c="#a2ff80" title="Салатовий"></button>
-                    <button class="color-btn" style="background:#808aff" data-c="#808aff" title="Світло-синій"></button>
-                    <button class="color-btn" style="background:#c380ff" data-c="#c380ff" title="Світлий фіолетовий"></button>
-                    <button class="color-btn" style="background:#ff80f7" data-c="#ff80f7" title="Світло-рожевий"></button>
-                    <div style="width:8px;"></div>
-                    <button class="color-btn" style="background:#ff4040" data-c="#ff4040" title="Кавуновий"></button>
-                    <button class="color-btn" style="background:#ffa640" data-c="#ffa640" title="Ніжний помаранчевий"></button>
-                    <button class="color-btn" style="background:#ffe640" data-c="#ffe640" title="Диня"></button>
-                    <button class="color-btn" style="background:#73ff40" data-c="#73ff40" title="Ніжний зелений"></button>
-                    <button class="color-btn" style="background:#4050ff" data-c="#4050ff" title="Океанічний"></button>
-                    <button class="color-btn" style="background:#a640ff" data-c="#a640ff" title="Ніжний фіолетовий"></button>
-                    <button class="color-btn" style="background:#ff40f2" data-c="#ff40f2" title="Ніжний рожевий"></button>
-                    <div style="width:8px;"></div>
+                    <div style="width:10px;"></div>
+                    
+                    <!-- 🔴 ОСНОВНІ -->
                     <button class="color-btn" style="background:#ff0000" data-c="#ff0000" title="Червоний"></button>
                     <button class="color-btn" style="background:#ff8800" data-c="#ff8800" title="Помаранчевий"></button>
                     <button class="color-btn" style="background:#ffde00" data-c="#ffde00" title="Жовтий"></button>
@@ -217,37 +189,17 @@
                     <button class="color-btn" style="background:#0016ff" data-c="#0016ff" title="Синій"></button>
                     <button class="color-btn" style="background:#8a00ff" data-c="#8a00ff" title="Фіолетовий"></button>
                     <button class="color-btn" style="background:#ff00ec" data-c="#ff00ec" title="Рожевий"></button>
-                    <div style="width:8px;"></div>
-                    <button class="color-btn" style="background:#bf0000" data-c="#bf0000" title="Вишня"></button>
-                    <button class="color-btn" style="background:#bf6600" data-c="#bf6600" title="Корж"></button>
-                    <button class="color-btn" style="background:#bfa600" data-c="#bfa600" title="Темнуватий жовтий"></button>
-                    <button class="color-btn" style="background:#33bf00" data-c="#33bf00" title="Трава"></button>
-                    <button class="color-btn" style="background:#0010bf" data-c="#0010bf" title="Класичний синій"></button>
-                    <button class="color-btn" style="background:#6600bf" data-c="#6600bf" title="Фіолетова класика"></button>
-                    <button class="color-btn" style="background:#bf00b3" data-c="#bf00b3" title="Темнуватий рожевий"></button>
-                    <div style="width:8px;"></div>
-                    <button class="color-btn" style="background:#800000" data-c="#800000" title="Гниль"></button>
-                    <button class="color-btn" style="background:#804400" data-c="#804400" title="Коричневий"></button>
-                    <button class="color-btn" style="background:#806f00" data-c="#806f00" title="Болото"></button>
-                    <button class="color-btn" style="background:#228000" data-c="#228000" title="Зелений"></button>
-                    <button class="color-btn" style="background:#000b80" data-c="#000b80" title="Ніч"></button>
-                    <button class="color-btn" style="background:#440080" data-c="#440080" title="Віноград"></button>
-                    <button class="color-btn" style="background:#800077" data-c="#800077" title="Темно-рожевий"></button>
-                    <div style="width:8px;"></div>
-                    <button class="color-btn" style="background:#400000" data-c="#400000" title="Мутний червоний"></button>
-                    <button class="color-btn" style="background:#402200" data-c="#402200" title="Темний коричневий"></button>
-                    <button class="color-btn" style="background:#403700" data-c="#403700" title="Темне болото"></button>
-                    <button class="color-btn" style="background:#114000" data-c="#114000" title="Темний зелений"></button>
-                    <button class="color-btn" style="background:#000540" data-c="#000540" title="Повна ніч"></button>
-                    <button class="color-btn" style="background:#220040" data-c="#220040" title="Гнилий виноград"></button>
-                    <button class="color-btn" style="background:#40003c" data-c="#40003c" title="Мутний рожевий"></button>
-                    <div style="width:8px;"></div>
+                    <div style="width:10px;"></div>
+                    
+                    <!-- ⚪ НЕЙТРАЛЬНІ -->
                     <button class="color-btn" style="background:#ffffff" data-c="#ffffff" title="Білий"></button>
                     <button class="color-btn" style="background:#bfbfbf" data-c="#bfbfbf" title="Світло-сірий"></button>
                     <button class="color-btn" style="background:#808080" data-c="#808080" title="Сірий"></button>
                     <button class="color-btn" style="background:#404040" data-c="#404040" title="Темно-сірий"></button>
                     <button class="color-btn" style="background:#000000" data-c="#000000" title="Чорний"></button>
-                    <div style="width:8px;"></div>
+                    <div style="width:10px;"></div>
+                    
+                    <!-- 💎 ДОДАТКОВІ -->
                     <button class="color-btn" style="background:#f3b800" data-c="#f3b800" title="Золото"></button>
                     <button class="color-btn" style="background:#f3f3f3" data-c="#f3f3f3" title="Срібло"></button>
                     <button class="color-btn" style="background:#b5823f" data-c="#b5823f" title="Молочний шоколад"></button>
@@ -257,18 +209,13 @@
             </div>
         </div>
 
-        <!-- ПАНЕЛЬ MINECRAFT -->
-        <div id="panel-minecraft" class="panel">
-            <div class="mc-panel">
-                <div class="mc-btn tex-diorite" data-tex="tex-diorite" title="Діорит"></div>
-                <div class="mc-btn tex-oak" data-tex="tex-oak" title="Дуб"></div>
-                <div class="mc-btn tex-birch" data-tex="tex-birch" title="Береза"></div>
-                <div class="mc-btn tex-jungle" data-tex="tex-jungle" title="Тропічне"></div>
-                <div class="mc-btn tex-acacia" data-tex="tex-acacia" title="Акація"></div>
-                <div class="mc-btn tex-dark-oak" data-tex="tex-dark-oak" title="Темний дуб"></div>
-                <div class="mc-btn tex-spruce" data-tex="tex-spruce" title="Ялина"></div>
-                <div class="mc-btn tex-cherry" data-tex="tex-cherry" title="Вишня"></div>
-                <div class="mc-btn tex-mangrove" data-tex="tex-mangrove" title="Мангрове"></div>
+        <!-- ПРИВАТНІ КОЛЬОРИ -->
+        <div id="panel-private" class="panel">
+            <div class="private-panel">
+                <h3 style="color:#333;">Створи свій колір</h3>
+                <input type="color" id="colorPicker" class="color-picker-input" value="#ff4a00">
+                <button class="save-btn" onclick="saveCustomColor()">💾 Зберегти колір</button>
+                <div class="custom-colors-grid" id="customColors"></div>
             </div>
         </div>
 
@@ -289,15 +236,13 @@
     <div id="grid"></div>
 
     <script>
-        let currentMode = 'color'; // 'color' або 'texture'
         let color = '#ff4a00';
-        let texture = null;
         let shape = 'square';
         let currentTool = 'draw';
         let isPainting = false;
+        let customColors = JSON.parse(localStorage.getItem('customColors')) || [];
         const grid = document.getElementById('grid');
         const cols = 30, rows = 22;
-        const textureClasses = ['tex-diorite','tex-oak','tex-birch','tex-jungle','tex-acacia','tex-dark-oak','tex-spruce','tex-cherry','tex-mangrove'];
 
         for(let i=0; i<cols*rows; i++){
             const cell = document.createElement('div');
@@ -319,31 +264,49 @@
             }
         });
 
-        // 🎨 КОЛЬОРИ
+        // 🎨 КОЛЬОРИ (Користувацькі)
         document.querySelectorAll('.color-btn[data-c]').forEach(btn => {
             btn.onclick = function(e){
                 e.stopPropagation();
                 document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 color = this.dataset.c;
-                currentMode = 'color'; texture = null;
                 updatePreviews();
                 if(currentTool === 'eraser') setTool('draw');
             }
         });
 
-        // ⛏️ ТЕКСТУРИ
-        document.querySelectorAll('.mc-btn[data-tex]').forEach(btn => {
-            btn.onclick = function(e){
-                e.stopPropagation();
-                document.querySelectorAll('.mc-btn').forEach(b=>b.classList.remove('active'));
-                this.classList.add('active');
-                texture = this.dataset.tex;
-                currentMode = 'texture'; color = null;
-                updatePreviews();
-                if(currentTool === 'eraser') setTool('draw');
-            }
+        // 🔒 ПРИВАТНІ - збереження кольору
+        document.getElementById('colorPicker').addEventListener('input', (e) => {
+            color = e.target.value;
+            updatePreviews();
         });
+
+        function saveCustomColor() {
+            if(!customColors.includes(color)) {
+                customColors.push(color);
+                localStorage.setItem('customColors', JSON.stringify(customColors));
+                renderCustomColors();
+            }
+        }
+
+        function renderCustomColors() {
+            const container = document.getElementById('customColors');
+            container.innerHTML = '';
+            customColors.forEach(c => {
+                const btn = document.createElement('div');
+                btn.className = 'custom-btn';
+                btn.style.background = c;
+                btn.onclick = () => {
+                    color = c;
+                    document.querySelectorAll('.custom-btn').forEach(b=>b.classList.remove('active'));
+                    btn.classList.add('active');
+                    updatePreviews();
+                };
+                container.appendChild(btn);
+            });
+        }
+        renderCustomColors();
 
         // 🔷 ФІГУРИ
         document.querySelectorAll('.shape-panel .btn-icon').forEach(btn => {
@@ -366,8 +329,9 @@
             document.getElementById('btn-draw').classList.toggle('active', tool==='draw');
             document.getElementById('btn-bucket').classList.toggle('active', tool==='bucket');
             document.getElementById('btn-eraser').classList.toggle('active', tool==='eraser');
-            if(tool !== 'draw') document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
-            else {
+            if(tool !== 'draw') {
+                document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
+            } else {
                 const active = document.querySelector(`.shape-panel .btn-icon[data-s="${shape}"]`);
                 if(active) active.classList.add('active');
             }
@@ -381,20 +345,12 @@
 
         function paintCell(cell) {
             cell.className = 'cell ' + shape;
-            textureClasses.forEach(t => cell.classList.remove(t));
-            cell.style.background = '';
-            
-            if(currentMode === 'texture' && texture) {
-                cell.classList.add(texture);
-                cell.style.borderBottom = '';
+            if(shape === 'triangle'){
+                cell.style.background = 'transparent';
+                cell.style.borderBottomColor = color;
             } else {
-                if(shape === 'triangle'){
-                    cell.style.background = 'transparent';
-                    cell.style.borderBottomColor = color;
-                } else {
-                    cell.style.background = color;
-                    cell.style.borderBottom = '';
-                }
+                cell.style.background = color;
+                cell.style.borderBottom = '';
             }
         }
 
@@ -402,16 +358,17 @@
             cell.className = 'cell square';
             cell.style.background = '';
             cell.style.borderBottom = '';
-            textureClasses.forEach(t => cell.classList.remove(t));
         }
 
         function floodFill(startCell) {
             const idx = parseInt(startCell.dataset.index);
             const cells = grid.children;
-            const targetState = getCellState(startCell);
-            const newState = { mode: currentMode, color: color, texture: texture, shape: shape };
+            const targetBg = startCell.style.background || '#E0F7FA';
+            const targetShape = startCell.classList.contains('triangle') ? 'triangle' : 
+                               (startCell.classList.contains('circle') ? 'circle' : 'square');
             
-            if(isSameState(targetState, newState)) return;
+            const newState = (shape === 'triangle') ? 'transparent' : color;
+            if(targetBg === newState && targetShape === shape) return;
 
             const stack = [idx];
             const visited = new Set([idx]);
@@ -419,7 +376,7 @@
             while(stack.length) {
                 const curIdx = stack.pop();
                 const cell = cells[curIdx];
-                paintCellDirect(cell, newState);
+                paintCell(cell);
 
                 const neighbors = [curIdx-1, curIdx+1, curIdx-cols, curIdx+cols];
                 for(let nIdx of neighbors) {
@@ -428,8 +385,11 @@
                         if(Math.abs(curIdx-nIdx)===1 && r1!==r2) continue;
                         
                         const nCell = cells[nIdx];
-                        const nState = getCellState(nCell);
-                        if(isSameState(nState, targetState)) {
+                        const nBg = nCell.style.background || '#E0F7FA';
+                        const nShape = nCell.classList.contains('triangle') ? 'triangle' : 
+                                      (nCell.classList.contains('circle') ? 'circle' : 'square');
+                        
+                        if(nBg === targetBg && nShape === targetShape) {
                             visited.add(nIdx);
                             stack.push(nIdx);
                         }
@@ -438,54 +398,10 @@
             }
         }
 
-        function paintCellDirect(cell, state) {
-            cell.className = 'cell ' + state.shape;
-            textureClasses.forEach(t => cell.classList.remove(t));
-            cell.style.background = '';
-            if(state.mode === 'texture' && state.texture) {
-                cell.classList.add(state.texture);
-            } else {
-                if(state.shape === 'triangle') {
-                    cell.style.background = 'transparent';
-                    cell.style.borderBottomColor = state.color;
-                } else {
-                    cell.style.background = state.color;
-                }
-            }
-        }
-
-        function getCellState(cell) {
-            let mode = 'color', colorVal = cell.style.background || '#E0F7FA', texVal = null, shapeVal = 'square';
-            if(cell.classList.contains('circle')) shapeVal = 'circle';
-            if(cell.classList.contains('triangle')) shapeVal = 'triangle';
-            
-            for(let t of textureClasses) {
-                if(cell.classList.contains(t)) { mode = 'texture'; texVal = t; break; }
-            }
-            if(!texVal && (!colorVal || colorVal==='transparent')) { colorVal = '#E0F7FA'; }
-            return { mode, color: colorVal, texture: texVal, shape: shapeVal };
-        }
-
-        function isSameState(s1, s2) {
-            if(s1.mode !== s2.mode) return false;
-            if(s1.shape !== s2.shape) return false;
-            if(s1.mode === 'texture') return s1.texture === s2.texture;
-            return s1.color === s2.color;
-        }
-
         function updatePreviews(){
             document.querySelectorAll('.preview-shape').forEach(el => {
-                if(el.classList.contains('p-tri')) {
-                    el.style.borderBottomColor = currentMode==='color' ? color : '#888';
-                } else {
-                    el.style.background = currentMode==='color' ? color : '#ccc';
-                    if(currentMode==='texture' && texture) {
-                        el.className = 'preview-shape ' + texture;
-                        el.style.background = '';
-                    } else {
-                        el.className = 'preview-shape p-' + shape;
-                    }
-                }
+                if(el.classList.contains('p-tri')) el.style.borderBottomColor = color;
+                else el.style.background = color;
             });
         }
 
@@ -495,7 +411,6 @@
                     c.className = 'cell square';
                     c.style.background = '';
                     c.style.borderBottom = '';
-                    textureClasses.forEach(t => c.classList.remove(t));
                 });
             }
         }

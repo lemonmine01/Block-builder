@@ -21,9 +21,7 @@
             font-size: 24px; text-align: center;
         }
         
-        .tabs {
-            display: flex; gap: 10px; margin-bottom: 10px;
-        }
+        .tabs { display: flex; gap: 10px; margin-bottom: 10px; }
         .tab-btn {
             padding: 8px 20px; border: none; border-radius: 10px;
             background: rgba(255,255,255,0.7); cursor: pointer;
@@ -36,91 +34,62 @@
             transform: translateY(-2px); color: #000;
         }
         
-        .toolbar {
-            display: flex; flex-direction: column; gap: 10px;
-            align-items: center; width: 100%;
-        }
-        
+        .toolbar { display: flex; flex-direction: column; gap: 10px; align-items: center; width: 100%; }
         .panel { display: none; width: 100%; justify-content: center; }
         .panel.active { display: flex; }
         
         .color-panel {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 12px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            width: 96vw; max-width: 1200px;
+            background: rgba(255, 255, 255, 0.95); padding: 12px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); width: 96vw; max-width: 1200px;
         }
-        .color-picker {
-            display: flex; gap: 5px; align-items: center;
-            justify-content: center; flex-wrap: wrap;
-        }
+        .color-picker { display: flex; gap: 5px; align-items: center; justify-content: center; flex-wrap: wrap; }
         .color-btn {
-            width: 24px; height: 24px;
-            border: 2px solid rgba(0,0,0,0.1); border-radius: 50%;
-            cursor: pointer; transition: transform 0.15s;
-            flex-shrink: 0; user-select: none; position: relative;
+            width: 24px; height: 24px; border: 2px solid rgba(0,0,0,0.1); border-radius: 50%;
+            cursor: pointer; transition: transform 0.15s; flex-shrink: 0; user-select: none; position: relative;
         }
         .color-btn:hover { transform: scale(1.25); z-index: 10; }
-        .color-btn.active {
-            border-color: white; box-shadow: 0 0 0 2px #333;
-            transform: scale(1.15);
-        }
+        .color-btn.active { border-color: white; box-shadow: 0 0 0 2px #333; transform: scale(1.15); }
         .color-btn:hover::after {
-            content: attr(title); position: absolute;
-            bottom: 115%; left: 50%; transform: translateX(-50%);
-            background: rgba(0,0,0,0.85); color: white;
-            padding: 3px 6px; border-radius: 4px; font-size: 10px;
-            white-space: nowrap; pointer-events: none; z-index: 2000;
+            content: attr(title); position: absolute; bottom: 115%; left: 50%; transform: translateX(-50%);
+            background: rgba(0,0,0,0.85); color: white; padding: 3px 6px; border-radius: 4px;
+            font-size: 10px; white-space: nowrap; pointer-events: none; z-index: 2000;
         }
 
         .private-panel {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px; border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; gap: 15px;
-            align-items: center;
+            background: rgba(255, 255, 255, 0.95); padding: 20px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column; gap: 15px; align-items: center;
         }
         .color-picker-input {
-            width: 80px; height: 80px; border: none;
-            border-radius: 12px; cursor: pointer;
+            width: 80px; height: 80px; border: none; border-radius: 12px; cursor: pointer;
             box-shadow: 0 4px 12px rgba(0,0,0,0.2);
         }
-        .custom-colors-grid {
-            display: flex; gap: 8px; flex-wrap: wrap;
-            justify-content: center; max-width: 400px;
-        }
+        .custom-colors-grid { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; max-width: 400px; }
         .custom-btn {
-            width: 40px; height: 40px;
-            border: 3px solid rgba(0,0,0,0.1); border-radius: 8px;
+            width: 40px; height: 40px; border: 3px solid rgba(0,0,0,0.1); border-radius: 8px;
             cursor: pointer; transition: all 0.15s;
         }
         .custom-btn:hover { transform: scale(1.15); border-color: #333; }
-        .custom-btn.active {
-            border-color: #333; box-shadow: 0 0 0 3px rgba(0,0,0,0.3);
-        }
+        .custom-btn.active { border-color: #333; box-shadow: 0 0 0 3px rgba(0,0,0,0.3); }
         .save-btn {
-            padding: 8px 16px; background: #4CAF50; color: white;
-            border: none; border-radius: 8px; cursor: pointer;
-            font-weight: bold; font-size: 14px;
+            padding: 8px 16px; background: #4CAF50; color: white; border: none;
+            border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 14px;
         }
         .save-btn:hover { background: #45a049; }
         
         .panels-group { display: flex; gap: 10px; margin-top: 5px; }
         .shape-panel, .tools-panel {
-            background: rgba(255, 255, 255, 0.95); padding: 8px;
-            border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            display: flex; flex-direction: column; gap: 6px; align-items: center;
+            background: rgba(255, 255, 255, 0.95); padding: 8px; border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); display: flex; flex-direction: column;
+            gap: 6px; align-items: center;
         }
         .btn-icon {
-            width: 38px; height: 38px; border: 2px solid rgba(0,0,0,0.1);
-            border-radius: 8px; background: white; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 18px; user-select: none; transition: all 0.15s;
+            width: 38px; height: 38px; border: 2px solid rgba(0,0,0,0.1); border-radius: 8px;
+            background: white; cursor: pointer; display: flex; align-items: center;
+            justify-content: center; font-size: 18px; user-select: none; transition: all 0.15s;
         }
         .btn-icon:hover { background: #f0f0f0; transform: scale(1.1); }
         .btn-icon.active {
-            border-color: #333; box-shadow: 0 0 0 2px white, 0 0 0 4px #333;
-            background: #e0e0e0;
+            border-color: #333; box-shadow: 0 0 0 2px white, 0 0 0 4px #333; background: #e0e0e0;
         }
         .preview-shape { width: 18px; height: 18px; background: #ff4a00; }
         .p-sq { border-radius: 3px; } .p-circ { border-radius: 50%; }
@@ -130,29 +99,29 @@
             border-bottom: 18px solid #ff4a00;
         }
         .action-btn {
-            padding: 6px 12px; border: none; border-radius: 6px; 
-            cursor: pointer; font-weight: bold; color: white; font-size: 13px;
+            padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer;
+            font-weight: bold; color: white; font-size: 13px;
         }
         .btn-clear { background: #ff4757; }
         .btn-export { background: #4CAF50; }
         .btn-ref { background: #2196F3; }
+        .btn-undo { background: #607D8B; }
+        .btn-undo:disabled { background: #ccc; cursor: not-allowed; }
         
         #ref-container {
             display: none; margin-top: 15px; text-align: center;
             background: rgba(0,0,0,0.3); padding: 10px; border-radius: 12px;
         }
         #ref-image {
-            max-width: 90vw; max-height: 200px;
-            border: 3px solid white; border-radius: 8px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            max-width: 90vw; max-height: 200px; border: 3px solid white;
+            border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         .ref-label { color: white; font-size: 12px; margin-top: 5px; }
 
         #grid {
             display: grid; grid-template-columns: repeat(30, 25px);
-            grid-template-rows: repeat(22, 25px); gap: 1px;
-            background: #87CEEB; padding: 5px; border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            grid-template-rows: repeat(22, 25px); gap: 1px; background: #87CEEB;
+            padding: 5px; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             max-width: 98vw; overflow: auto; margin-top: 10px;
         }
         .cell { width: 25px; height: 25px; background: #E0F7FA; cursor: pointer; }
@@ -164,11 +133,7 @@
             border-left: 12px solid transparent; border-right: 12px solid transparent;
             border-bottom: 25px solid;
         }
-        /* Стиль для попереднього перегляду лінії */
-        .cell.line-preview {
-            opacity: 0.5 !important;
-            transition: opacity 0.1s;
-        }
+        .cell.preview-active { opacity: 0.5 !important; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -183,7 +148,6 @@
         <div id="panel-user" class="panel active">
             <div class="color-panel">
                 <div class="color-picker">
-                    <!--  НЕОСНОВНІ (11) -->
                     <button class="color-btn active" style="background:#ff4a00" data-c="#ff4a00" title="Вогняний червоний"></button>
                     <button class="color-btn" style="background:#ff6300" data-c="#ff6300" title="Вогняний"></button>
                     <button class="color-btn" style="background:#ffad00" data-c="#ffad00" title="Вогняний жовтий"></button>
@@ -196,8 +160,6 @@
                     <button class="color-btn" style="background:#e100ff" data-c="#e100ff" title="Фіолетово-рожевий"></button>
                     <button class="color-btn" style="background:#ff0095" data-c="#ff0095" title="Малиновий"></button>
                     <div style="width:8px;"></div>
-                    
-                    <!-- ☀️ ЯСНІ (7) -->
                     <button class="color-btn" style="background:#ffbfbf" data-c="#ffbfbf" title="Переспілий кавун"></button>
                     <button class="color-btn" style="background:#ffe1bf" data-c="#ffe1bf" title="Ясний помаранчевий"></button>
                     <button class="color-btn" style="background:#fff7bf" data-c="#fff7bf" title="Переспіла диня"></button>
@@ -206,8 +168,6 @@
                     <button class="color-btn" style="background:#e1bfff" data-c="#e1bfff" title="Фіолетове сяйво"></button>
                     <button class="color-btn" style="background:#ffbffb" data-c="#ffbffb" title="Рожева класика"></button>
                     <div style="width:8px;"></div>
-                    
-                    <!--  СВІТЛІ (7) -->
                     <button class="color-btn" style="background:#ff8080" data-c="#ff8080" title="Світлий кавун"></button>
                     <button class="color-btn" style="background:#ffc380" data-c="#ffc380" title="Бежевий"></button>
                     <button class="color-btn" style="background:#ffee80" data-c="#ffee80" title="Лимонний"></button>
@@ -216,8 +176,6 @@
                     <button class="color-btn" style="background:#c380ff" data-c="#c380ff" title="Світлий фіолетовий"></button>
                     <button class="color-btn" style="background:#ff80f7" data-c="#ff80f7" title="Світло-рожевий"></button>
                     <div style="width:8px;"></div>
-                    
-                    <!-- 🌸 НІЖНІ (7) -->
                     <button class="color-btn" style="background:#ff4040" data-c="#ff4040" title="Кавуновий"></button>
                     <button class="color-btn" style="background:#ffa640" data-c="#ffa640" title="Ніжний помаранчевий"></button>
                     <button class="color-btn" style="background:#ffe640" data-c="#ffe640" title="Диня"></button>
@@ -226,8 +184,6 @@
                     <button class="color-btn" style="background:#a640ff" data-c="#a640ff" title="Ніжний фіолетовий"></button>
                     <button class="color-btn" style="background:#ff40f2" data-c="#ff40f2" title="Ніжний рожевий"></button>
                     <div style="width:8px;"></div>
-                    
-                    <!-- 🔴 ОСНОВНІ (7) -->
                     <button class="color-btn" style="background:#ff0000" data-c="#ff0000" title="Червоний"></button>
                     <button class="color-btn" style="background:#ff8800" data-c="#ff8800" title="Помаранчевий"></button>
                     <button class="color-btn" style="background:#ffde00" data-c="#ffde00" title="Жовтий"></button>
@@ -236,8 +192,6 @@
                     <button class="color-btn" style="background:#8a00ff" data-c="#8a00ff" title="Фіолетовий"></button>
                     <button class="color-btn" style="background:#ff00ec" data-c="#ff00ec" title="Рожевий"></button>
                     <div style="width:8px;"></div>
-                    
-                    <!-- 🍒 ТЕМНУВАТІ (7) -->
                     <button class="color-btn" style="background:#bf0000" data-c="#bf0000" title="Вишня"></button>
                     <button class="color-btn" style="background:#bf6600" data-c="#bf6600" title="Корж"></button>
                     <button class="color-btn" style="background:#bfa600" data-c="#bfa600" title="Темнуватий жовтий"></button>
@@ -246,8 +200,6 @@
                     <button class="color-btn" style="background:#6600bf" data-c="#6600bf" title="Фіолетова класика"></button>
                     <button class="color-btn" style="background:#bf00b3" data-c="#bf00b3" title="Темнуватий рожевий"></button>
                     <div style="width:8px;"></div>
-                    
-                    <!-- 🌑 ТЕМНІ (7) -->
                     <button class="color-btn" style="background:#800000" data-c="#800000" title="Гниль"></button>
                     <button class="color-btn" style="background:#804400" data-c="#804400" title="Коричневий"></button>
                     <button class="color-btn" style="background:#806f00" data-c="#806f00" title="Болото"></button>
@@ -256,8 +208,6 @@
                     <button class="color-btn" style="background:#440080" data-c="#440080" title="Віноград"></button>
                     <button class="color-btn" style="background:#800077" data-c="#800077" title="Темно-рожевий"></button>
                     <div style="width:8px;"></div>
-                    
-                    <!-- 🌫️ МУТНІ (7) -->
                     <button class="color-btn" style="background:#400000" data-c="#400000" title="Мутний червоний"></button>
                     <button class="color-btn" style="background:#402200" data-c="#402200" title="Темний коричневий"></button>
                     <button class="color-btn" style="background:#403700" data-c="#403700" title="Темне болото"></button>
@@ -266,24 +216,20 @@
                     <button class="color-btn" style="background:#220040" data-c="#220040" title="Гнилий виноград"></button>
                     <button class="color-btn" style="background:#40003c" data-c="#40003c" title="Мутний рожевий"></button>
                     <div style="width:8px;"></div>
-                    
-                    <!--  НЕЙТРАЛЬНІ (5) -->
                     <button class="color-btn" style="background:#ffffff" data-c="#ffffff" title="Білий"></button>
                     <button class="color-btn" style="background:#bfbfbf" data-c="#bfbfbf" title="Світло-сірий"></button>
                     <button class="color-btn" style="background:#808080" data-c="#808080" title="Сірий"></button>
                     <button class="color-btn" style="background:#404040" data-c="#404040" title="Темно-сірий"></button>
                     <button class="color-btn" style="background:#000000" data-c="#000000" title="Чорний"></button>
                     <div style="width:8px;"></div>
-                    
-                    <!-- 💎 ДОДАТКОВІ (3) -->
                     <button class="color-btn" style="background:#f3b800" data-c="#f3b800" title="Золото"></button>
                     <button class="color-btn" style="background:#f3f3f3" data-c="#f3f3f3" title="Срібло"></button>
                     <button class="color-btn" style="background:#b5823f" data-c="#b5823f" title="Молочний шоколад"></button>
                     <div style="width:10px;"></div>
-                    
-                    <!-- КНОПКИ ДІЙ -->
-                    <button class="action-btn btn-clear" onclick="clearGrid()">🗑️ Очистити</button>
-                    <button class="action-btn btn-export" onclick="exportDrawing()">💾 Завантажити PNG</button>
+                    <button class="action-btn btn-undo" id="btn-undo" onclick="undo()" disabled>↩️</button>
+                    <button class="action-btn btn-undo" id="btn-redo" onclick="redo()" disabled>↪️</button>
+                    <button class="action-btn btn-clear" onclick="clearGrid()">🗑️</button>
+                    <button class="action-btn btn-export" onclick="exportDrawing()">💾 PNG</button>
                     <button class="action-btn btn-ref" onclick="document.getElementById('imgLoader').click()">📷 Зразок</button>
                     <input type="file" id="imgLoader" accept="image/*" style="display:none">
                 </div>
@@ -294,7 +240,7 @@
             <div class="private-panel">
                 <h3 style="color:#333;">Створи свій колір</h3>
                 <input type="color" id="colorPicker" class="color-picker-input" value="#ff4a00">
-                <button class="save-btn" onclick="saveCustomColor()">💾 Зберегти колір</button>
+                <button class="save-btn" onclick="saveCustomColor()">💾 Зберегти</button>
                 <div class="custom-colors-grid" id="customColors"></div>
             </div>
         </div>
@@ -311,6 +257,8 @@
                 <div class="btn-icon" id="btn-eraser" title="Ластик">🧽</div>
                 <div class="btn-icon" id="btn-pipette" title="Піпетка">💉</div>
                 <div class="btn-icon" id="btn-line" title="Лінія">📏</div>
+                <div class="btn-icon" id="btn-rect" title="Прямокутник">⬜</div>
+                <div class="btn-icon" id="btn-circle" title="Коло">⭕</div>
             </div>
         </div>
     </div>
@@ -332,23 +280,120 @@
         const cols = 30, rows = 22;
         const cellSize = 25, gap = 1;
 
-        // 📏 ЛОГІКА ЛІНІЇ
-        let lineStartIdx = null;
-        let isLineDrawing = false;
-        let lastHoveredIdx = null;
-        let linePreviewCells = [];
+        // 🔙 ІСТОРІЯ (UNDO/REDO)
+        let history = [];
+        let historyIndex = -1;
+        const MAX_HISTORY = 50;
 
+        function getGridState() {
+            return Array.from(grid.children).map(c => ({
+                className: c.className.replace(' preview-active', ''),
+                background: c.style.background,
+                borderBottomColor: c.style.borderBottomColor
+            }));
+        }
+
+        function applyGridState(state) {
+            grid.children.forEach((c, i) => {
+                if(state[i]) {
+                    c.className = state[i].className;
+                    c.style.background = state[i].background;
+                    c.style.borderBottomColor = state[i].borderBottomColor;
+                }
+            });
+        }
+
+        function saveState() {
+            const state = getGridState();
+            if (historyIndex < history.length - 1) history = history.slice(0, historyIndex + 1);
+            history.push(state);
+            if (history.length > MAX_HISTORY) history.shift();
+            else historyIndex++;
+            updateUndoRedoUI();
+        }
+
+        function undo() {
+            if (historyIndex > 0) { historyIndex--; applyGridState(history[historyIndex]); updateUndoRedoUI(); }
+        }
+
+        function redo() {
+            if (historyIndex < history.length - 1) { historyIndex++; applyGridState(history[historyIndex]); updateUndoRedoUI(); }
+        }
+
+        function updateUndoRedoUI() {
+            document.getElementById('btn-undo').disabled = historyIndex <= 0;
+            document.getElementById('btn-redo').disabled = historyIndex >= history.length - 1;
+        }
+
+        //  ФІГУРИ (ПРЯМОКУТНИК / КОЛО)
+        let shapeToolType = null; // 'rect' or 'circle'
+        let shapeStartIdx = null;
+        let isShapeDrawing = false;
+        let shapePreviewCells = [];
+
+        function getCellsInBounds(startIdx, endIdx, type) {
+            const x1 = startIdx % cols, y1 = Math.floor(startIdx / cols);
+            const x2 = endIdx % cols, y2 = Math.floor(endIdx / cols);
+            const minX = Math.min(x1, x2), maxX = Math.max(x1, x2);
+            const minY = Math.min(y1, y2), maxY = Math.max(y1, y2);
+            const indices = [];
+            const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
+            const rx = (maxX - minX) / 2, ry = (maxY - minY) / 2;
+
+            for(let y = minY; y <= maxY; y++) {
+                for(let x = minX; x <= maxX; x++) {
+                    if(type === 'rect') {
+                        indices.push(y * cols + x);
+                    } else if(type === 'circle') {
+                        const dx = (x - cx) / (rx || 1);
+                        const dy = (y - cy) / (ry || 1);
+                        if(dx*dx + dy*dy <= 1) indices.push(y * cols + x);
+                    }
+                }
+            }
+            return indices;
+        }
+
+        function drawShapePreview(endIdx) {
+            clearShapePreview();
+            shapePreviewCells = getCellsInBounds(shapeStartIdx, endIdx, shapeToolType);
+            shapePreviewCells.forEach(idx => {
+                const c = grid.children[idx];
+                if(!c.classList.contains('preview-active')) {
+                    c.style.opacity = '0.4';
+                    c.classList.add('preview-active');
+                }
+            });
+        }
+
+        function clearShapePreview() {
+            shapePreviewCells.forEach(idx => {
+                const c = grid.children[idx];
+                c.style.opacity = '';
+                c.classList.remove('preview-active');
+            });
+            shapePreviewCells = [];
+        }
+
+        function finalizeShape(endIdx) {
+            const indices = getCellsInBounds(shapeStartIdx, endIdx, shapeToolType);
+            indices.forEach(idx => paintCell(grid.children[idx]));
+            clearShapePreview();
+            saveState();
+        }
+
+        // 🖱️ ІНІЦІАЛІЗАЦІЯ СІТКИ
         for(let i=0; i<cols*rows; i++){
             const cell = document.createElement('div');
             cell.className = 'cell square';
             cell.dataset.index = i;
             
-            cell.onmousedown = () => {
-                if(currentTool === 'line') {
-                    isLineDrawing = true;
-                    lineStartIdx = i;
-                    linePreviewCells = [];
-                    lastHoveredIdx = i;
+            cell.onmousedown = (e) => {
+                e.preventDefault();
+                if(currentTool === 'line' || currentTool === 'rect' || currentTool === 'circle') {
+                    isPainting = true;
+                    if(currentTool === 'line') lineStartIdx = i;
+                    else { shapeToolType = currentTool; shapeStartIdx = i; }
                 } else {
                     isPainting = true;
                     handleTool(cell);
@@ -356,10 +401,13 @@
             };
             
             cell.onmouseenter = () => {
-                if(currentTool === 'line' && isLineDrawing) {
-                    lastHoveredIdx = i;
-                    drawLinePreview(i);
-                } else if(isPainting && currentTool !== 'line') {
+                const idx = parseInt(cell.dataset.index);
+                if(currentTool === 'line' && isPainting && lineStartIdx !== null) {
+                    lastHoveredIdx = idx;
+                    drawLinePreview(idx);
+                } else if((currentTool === 'rect' || currentTool === 'circle') && isPainting && shapeStartIdx !== null) {
+                    drawShapePreview(idx);
+                } else if(isPainting && !['line','rect','circle'].includes(currentTool)) {
                     handleTool(cell);
                 }
             };
@@ -368,15 +416,20 @@
         }
         
         document.onmouseup = () => {
-            if(isLineDrawing) {
-                finalizeLine();
-                isLineDrawing = false;
-                lineStartIdx = null;
-                lastHoveredIdx = null;
-                clearLinePreview();
-            }
+            if(currentTool === 'line' && isPainting) finalizeLine();
+            if((currentTool === 'rect' || currentTool === 'circle') && isPainting) finalizeShape(lastHoveredIdx || shapeStartIdx);
             isPainting = false;
+            lineStartIdx = null;
+            shapeStartIdx = null;
+            lastHoveredIdx = null;
+            clearLinePreview();
+            clearShapePreview();
         };
+
+        // 📏 ЛІНІЯ (Алгоритм Брезенгема)
+        let lineStartIdx = null;
+        let lastHoveredIdx = null;
+        let linePreviewCells = [];
 
         function getLineIndices(idx1, idx2) {
             const x1 = idx1 % cols, y1 = Math.floor(idx1 / cols);
@@ -401,9 +454,9 @@
             linePreviewCells = getLineIndices(lineStartIdx, endIdx);
             linePreviewCells.forEach(idx => {
                 const c = grid.children[idx];
-                if(!c.classList.contains('line-preview')) {
+                if(!c.classList.contains('preview-active')) {
                     c.style.opacity = '0.4';
-                    c.classList.add('line-preview');
+                    c.classList.add('preview-active');
                 }
             });
         }
@@ -412,7 +465,7 @@
             linePreviewCells.forEach(idx => {
                 const c = grid.children[idx];
                 c.style.opacity = '';
-                c.classList.remove('line-preview');
+                c.classList.remove('preview-active');
             });
             linePreviewCells = [];
         }
@@ -420,12 +473,12 @@
         function finalizeLine() {
             const endIdx = lastHoveredIdx !== null ? lastHoveredIdx : lineStartIdx;
             const indices = getLineIndices(lineStartIdx, endIdx);
-            indices.forEach(idx => {
-                paintCell(grid.children[idx]);
-            });
+            indices.forEach(idx => paintCell(grid.children[idx]));
             clearLinePreview();
+            saveState();
         }
 
+        //  ТАБИ, КОЛЬОРИ, ІНСТРУМЕНТИ
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.onclick = () => {
                 document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
@@ -439,8 +492,8 @@
             const file = e.target.files[0];
             if(file) {
                 const reader = new FileReader();
-                reader.onload = function(event) {
-                    document.getElementById('ref-image').src = event.target.result;
+                reader.onload = (ev) => {
+                    document.getElementById('ref-image').src = ev.target.result;
                     document.getElementById('ref-container').style.display = 'block';
                 }
                 reader.readAsDataURL(file);
@@ -453,14 +506,14 @@
                 document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 color = this.dataset.c;
-                if(currentTool === 'pipette' || currentTool === 'line') setTool('draw');
+                if(['pipette','line','rect','circle'].includes(currentTool)) setTool('draw');
                 updatePreviews();
             }
         });
 
         document.getElementById('colorPicker').addEventListener('input', (e) => {
             color = e.target.value;
-            if(currentTool === 'pipette' || currentTool === 'line') setTool('draw');
+            if(['pipette','line','rect','circle'].includes(currentTool)) setTool('draw');
             updatePreviews();
         });
 
@@ -505,6 +558,8 @@
         document.getElementById('btn-eraser').onclick = () => setTool('eraser');
         document.getElementById('btn-pipette').onclick = () => setTool('pipette');
         document.getElementById('btn-line').onclick = () => setTool('line');
+        document.getElementById('btn-rect').onclick = () => setTool('rect');
+        document.getElementById('btn-circle').onclick = () => setTool('circle');
 
         function setTool(tool) {
             currentTool = tool;
@@ -513,9 +568,11 @@
             document.getElementById('btn-eraser').classList.toggle('active', tool==='eraser');
             document.getElementById('btn-pipette').classList.toggle('active', tool==='pipette');
             document.getElementById('btn-line').classList.toggle('active', tool==='line');
-            if(tool !== 'draw') {
-                document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
-            } else {
+            document.getElementById('btn-rect').classList.toggle('active', tool==='rect');
+            document.getElementById('btn-circle').classList.toggle('active', tool==='circle');
+            
+            if(tool !== 'draw') document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
+            else {
                 const active = document.querySelector(`.shape-panel .btn-icon[data-s="${shape}"]`);
                 if(active) active.classList.add('active');
             }
@@ -524,44 +581,29 @@
         function handleTool(cell) {
             if(currentTool === 'draw') paintCell(cell);
             else if(currentTool === 'eraser') eraseCell(cell);
-            else if(currentTool === 'bucket') { floodFill(cell); isPainting = false; }
+            else if(currentTool === 'bucket') { floodFill(cell); saveState(); }
             else if(currentTool === 'pipette') pickColor(cell);
         }
 
         function pickColor(cell) {
-            if (cell.classList.contains('triangle')) {
-                const triangleColor = cell.style.borderBottomColor;
-                if (triangleColor && triangleColor !== 'transparent' && triangleColor !== '') {
-                    color = rgbToHex(triangleColor);
-                }
-            } else {
-                const cellColor = cell.style.background;
-                if (cellColor && cellColor !== 'transparent' && cellColor !== '') {
-                    color = rgbToHex(cellColor);
-                } else if (cell.classList.contains('square') || cell.classList.contains('circle')) {
-                    color = '#E0F7FA';
-                }
-            }
+            let picked = '#E0F7FA';
+            if(cell.classList.contains('triangle')) picked = cell.style.borderBottomColor || '#E0F7FA';
+            else if(cell.style.background && cell.style.background !== 'transparent') picked = cell.style.background;
             
+            color = rgbToHex(picked);
             document.querySelectorAll('.color-btn').forEach(btn => {
                 btn.classList.remove('active');
-                if (btn.dataset.c.toLowerCase() === color.toLowerCase()) {
-                    btn.classList.add('active');
-                }
+                if(btn.dataset.c.toLowerCase() === color.toLowerCase()) btn.classList.add('active');
             });
-            
             setTool('draw');
             updatePreviews();
         }
 
         function rgbToHex(rgb) {
-            if (rgb.startsWith('#')) return rgb;
-            const rgbValues = rgb.match(/\d+/g);
-            if (!rgbValues || rgbValues.length < 3) return '#000000';
-            const r = parseInt(rgbValues[0]).toString(16).padStart(2, '0');
-            const g = parseInt(rgbValues[1]).toString(16).padStart(2, '0');
-            const b = parseInt(rgbValues[2]).toString(16).padStart(2, '0');
-            return `#${r}${g}${b}`;
+            if(rgb.startsWith('#')) return rgb;
+            const m = rgb.match(/\d+/g);
+            if(!m || m.length < 3) return '#000000';
+            return `#${m[0].toString(16).padStart(2,'0')}${m[1].toString(16).padStart(2,'0')}${m[2].toString(16).padStart(2,'0')}`;
         }
 
         function paintCell(cell) {
@@ -593,27 +635,19 @@
 
             const stack = [idx];
             const visited = new Set([idx]);
-
             while(stack.length) {
                 const curIdx = stack.pop();
-                const cell = cells[curIdx];
-                paintCell(cell);
-
+                paintCell(cells[curIdx]);
                 const neighbors = [curIdx-1, curIdx+1, curIdx-cols, curIdx+cols];
                 for(let nIdx of neighbors) {
                     if(nIdx>=0 && nIdx<cols*rows && !visited.has(nIdx)) {
                         const r1 = Math.floor(curIdx/cols), r2 = Math.floor(nIdx/cols);
                         if(Math.abs(curIdx-nIdx)===1 && r1!==r2) continue;
-                        
                         const nCell = cells[nIdx];
                         const nBg = nCell.style.background || '#E0F7FA';
                         const nShape = nCell.classList.contains('triangle') ? 'triangle' : 
                                       (nCell.classList.contains('circle') ? 'circle' : 'square');
-                        
-                        if(nBg === targetBg && nShape === targetShape) {
-                            visited.add(nIdx);
-                            stack.push(nIdx);
-                        }
+                        if(nBg === targetBg && nShape === targetShape) { visited.add(nIdx); stack.push(nIdx); }
                     }
                 }
             }
@@ -624,42 +658,25 @@
             const ctx = canvas.getContext('2d');
             canvas.width = cols * (cellSize + gap) - gap;
             canvas.height = rows * (cellSize + gap) - gap;
-
             ctx.fillStyle = '#E0F7FA';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            const cells = document.querySelectorAll('.cell');
-            cells.forEach((cell, i) => {
-                const col = i % cols;
-                const row = Math.floor(i / cols);
-                const x = col * (cellSize + gap);
-                const y = row * (cellSize + gap);
-
-                if (cell.classList.contains('square')) {
+            grid.children.forEach((cell, i) => {
+                const col = i % cols, row = Math.floor(i / cols);
+                const x = col * (cellSize + gap), y = row * (cellSize + gap);
+                if(cell.classList.contains('square')) {
                     ctx.fillStyle = cell.style.background || '#E0F7FA';
-                    if (ctx.fillStyle === 'transparent') ctx.fillStyle = '#E0F7FA';
                     ctx.fillRect(x, y, cellSize, cellSize);
-                } else if (cell.classList.contains('circle')) {
+                } else if(cell.classList.contains('circle')) {
                     ctx.fillStyle = cell.style.background || '#E0F7FA';
-                    if (ctx.fillStyle === 'transparent') ctx.fillStyle = '#E0F7FA';
-                    ctx.beginPath();
-                    ctx.arc(x + cellSize/2, y + cellSize/2, cellSize/2, 0, Math.PI * 2);
-                    ctx.fill();
-                } else if (cell.classList.contains('triangle')) {
+                    ctx.beginPath(); ctx.arc(x + cellSize/2, y + cellSize/2, cellSize/2, 0, Math.PI*2); ctx.fill();
+                } else if(cell.classList.contains('triangle')) {
                     ctx.fillStyle = cell.style.borderBottomColor || '#E0F7FA';
-                    if (ctx.fillStyle === 'transparent') ctx.fillStyle = '#E0F7FA';
-                    ctx.beginPath();
-                    ctx.moveTo(x, y);
-                    ctx.lineTo(x + cellSize, y);
-                    ctx.lineTo(x + cellSize/2, y + cellSize);
-                    ctx.closePath();
-                    ctx.fill();
+                    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + cellSize, y); ctx.lineTo(x + cellSize/2, y + cellSize); ctx.closePath(); ctx.fill();
                 }
             });
-
             const link = document.createElement('a');
-            link.download = 'BlockBuilder_Ultimate.png';
-            link.href = canvas.toDataURL('image/png');
+            link.download = 'BlockBuilder.png';
+            link.href = canvas.toDataURL();
             link.click();
         }
 
@@ -672,13 +689,13 @@
 
         function clearGrid(){
             if(confirm('Очистити все поле?')){
-                document.querySelectorAll('.cell').forEach(c => {
-                    c.className = 'cell square';
-                    c.style.background = '';
-                    c.style.borderBottom = '';
-                });
+                grid.children.forEach(c => { c.className = 'cell square'; c.style.background = ''; c.style.borderBottom = ''; });
+                saveState();
             }
         }
+
+        // Перший стан при завантаженні
+        saveState();
     </script>
 </body>
 </html>

@@ -570,6 +570,7 @@
             cell.className = 'cell square';
             cell.style.background = '';
             cell.style.borderBottom = '';
+            cell.style.borderBottomColor = '';
         }
 
         function floodFill(startCell) {
@@ -617,22 +618,36 @@
                 const col = i % cols, row = Math.floor(i / cols);
                 const x = col * (cellSize + gap), y = row * (cellSize + gap);
                 
-                if(cell.classList.contains('square')) {
-                    ctx.fillStyle = cell.style.background || '#E0F7FA';
-                    ctx.fillRect(x, y, cellSize, cellSize);
-                } else if(cell.classList.contains('circle')) {
-                    ctx.fillStyle = cell.style.background || '#E0F7FA';
-                    ctx.beginPath();
-                    ctx.arc(x + cellSize/2, y + cellSize/2, cellSize/2, 0, Math.PI*2);
-                    ctx.fill();
-                } else if(cell.classList.contains('triangle')) {
-                    ctx.fillStyle = cell.style.borderBottomColor || '#E0F7FA';
+                let fillColor = '#E0F7FA';
+                
+                if(cell.classList.contains('triangle')) {
+                    // Для трикутників беремо borderBottomColor
+                    if(cell.style.borderBottomColor && cell.style.borderBottomColor !== 'transparent') {
+                        fillColor = cell.style.borderBottomColor;
+                    }
+                    ctx.fillStyle = fillColor;
                     ctx.beginPath();
                     ctx.moveTo(x, y);
                     ctx.lineTo(x + cellSize, y);
                     ctx.lineTo(x + cellSize/2, y + cellSize);
                     ctx.closePath();
                     ctx.fill();
+                } else if(cell.classList.contains('circle')) {
+                    // Для кіл беремо background
+                    if(cell.style.background && cell.style.background !== 'transparent' && cell.style.background !== '') {
+                        fillColor = cell.style.background;
+                    }
+                    ctx.fillStyle = fillColor;
+                    ctx.beginPath();
+                    ctx.arc(x + cellSize/2, y + cellSize/2, cellSize/2, 0, Math.PI*2);
+                    ctx.fill();
+                } else {
+                    // Для квадратів беремо background
+                    if(cell.style.background && cell.style.background !== 'transparent' && cell.style.background !== '') {
+                        fillColor = cell.style.background;
+                    }
+                    ctx.fillStyle = fillColor;
+                    ctx.fillRect(x, y, cellSize, cellSize);
                 }
             });
             
@@ -656,6 +671,7 @@
                     c.className = 'cell square'; 
                     c.style.background = ''; 
                     c.style.borderBottom = ''; 
+                    c.style.borderBottomColor = '';
                 });
                 saveState();
             }

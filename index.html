@@ -133,7 +133,6 @@
             border-left: 12px solid transparent; border-right: 12px solid transparent;
             border-bottom: 25px solid;
         }
-        .cell.preview-active { opacity: 0.5 !important; pointer-events: none; }
     </style>
 </head>
 <body>
@@ -257,8 +256,6 @@
                 <div class="btn-icon" id="btn-eraser" title="Ластик">🧽</div>
                 <div class="btn-icon" id="btn-pipette" title="Піпетка">💉</div>
                 <div class="btn-icon" id="btn-line" title="Лінія">📏</div>
-                <div class="btn-icon" id="btn-rect" title="Прямокутник">⬜</div>
-                <div class="btn-icon" id="btn-circle" title="Коло">⭕</div>
             </div>
         </div>
     </div>
@@ -287,7 +284,7 @@
 
         function getGridState() {
             return Array.from(grid.children).map(c => ({
-                className: c.className.replace(' preview-active', ''),
+                className: c.className,
                 background: c.style.background,
                 borderBottomColor: c.style.borderBottomColor
             }));
@@ -333,64 +330,6 @@
             document.getElementById('btn-redo').disabled = historyIndex >= history.length - 1;
         }
 
-        //  ФІГУРИ (ПРЯМОКУТНИК / КОЛО)
-        let shapeToolType = null;
-        let shapeStartIdx = null;
-        let isShapeDrawing = false;
-        let shapePreviewCells = [];
-
-        function getCellsInBounds(startIdx, endIdx, type) {
-            const x1 = startIdx % cols, y1 = Math.floor(startIdx / cols);
-            const x2 = endIdx % cols, y2 = Math.floor(endIdx / cols);
-            const minX = Math.min(x1, x2), maxX = Math.max(x1, x2);
-            const minY = Math.min(y1, y2), maxY = Math.max(y1, y2);
-            const indices = [];
-            const cx = (minX + maxX) / 2, cy = (minY + maxY) / 2;
-            const rx = (maxX - minX) / 2, ry = (maxY - minY) / 2;
-
-            for(let y = minY; y <= maxY; y++) {
-                for(let x = minX; x <= maxX; x++) {
-                    if(type === 'rect') {
-                        indices.push(y * cols + x);
-                    } else if(type === 'circle') {
-                        const dx = (x - cx) / (rx || 1);
-                        const dy = (y - cy) / (ry || 1);
-                        if(dx*dx + dy*dy <= 1) indices.push(y * cols + x);
-                    }
-                }
-            }
-            return indices;
-        }
-
-        function drawShapePreview(endIdx) {
-            clearShapePreview();
-            shapePreviewCells = getCellsInBounds(shapeStartIdx, endIdx, shapeToolType);
-            shapePreviewCells.forEach(idx => {
-                const c = grid.children[idx];
-                if(!c.classList.contains('preview-active')) {
-                    c.style.opacity = '0.4';
-                    c.classList.add('preview-active');
-                }
-            });
-        }
-
-        function clearShapePreview() {
-            shapePreviewCells.forEach(idx => {
-                const c = grid.children[idx];
-                c.style.opacity = '';
-                c.classList.remove('preview-active');
-            });
-            shapePreviewCells = [];
-        }
-
-        function finalizeShape(endIdx) {
-            if(!shapeStartIdx) return;
-            const indices = getCellsInBounds(shapeStartIdx, endIdx, shapeToolType);
-            indices.forEach(idx => paintCell(grid.children[idx]));
-            clearShapePreview();
-            saveState();
-        }
-
         // 🖱️ ІНІЦІАЛІЗАЦІЯ СІТКИ
         for(let i=0; i<cols*rows; i++){
             const cell = document.createElement('div');
@@ -399,14 +338,9 @@
             
             cell.onmousedown = (e) => {
                 e.preventDefault();
-                if(['line', 'rect', 'circle'].includes(currentTool)) {
+                if(currentTool === 'line') {
                     isPainting = true;
-                    if(currentTool === 'line') {
-                        lineStartIdx = i;
-                    } else {
-                        shapeToolType = currentTool;
-                        shapeStartIdx = i;
-                    }
+                    lineStartIdx = i;
                 } else {
                     isPainting = true;
                     handleTool(cell);
@@ -423,14 +357,11 @@
             const cell = e.target;
             if(!cell.classList.contains('cell')) return;
             
-            const idx = parseInt(cell.dataset.index);
-            
             if(currentTool === 'line' && lineStartIdx !== null) {
+                const idx = parseInt(cell.dataset.index);
                 lastHoveredIdx = idx;
                 drawLinePreview(idx);
-            } else if((currentTool === 'rect' || currentTool === 'circle') && shapeStartIdx !== null) {
-                drawShapePreview(idx);
-            } else if(currentTool !== 'line' && currentTool !== 'rect' && currentTool !== 'circle') {
+            } else if(currentTool !== 'line') {
                 handleTool(cell);
             }
         };
@@ -439,15 +370,10 @@
             if(currentTool === 'line' && isPainting) {
                 finalizeLine();
             }
-            if((currentTool === 'rect' || currentTool === 'circle') && isPainting) {
-                finalizeShape(lastHoveredIdx !== null ? lastHoveredIdx : shapeStartIdx);
-            }
             isPainting = false;
             lineStartIdx = null;
-            shapeStartIdx = null;
             lastHoveredIdx = null;
             clearLinePreview();
-            clearShapePreview();
         };
 
         // 📏 ЛІНІЯ (Алгоритм Брезенгема)
@@ -478,10 +404,7 @@
             linePreviewCells = getLineIndices(lineStartIdx, endIdx);
             linePreviewCells.forEach(idx => {
                 const c = grid.children[idx];
-                if(!c.classList.contains('preview-active')) {
-                    c.style.opacity = '0.4';
-                    c.classList.add('preview-active');
-                }
+                c.style.opacity = '0.4';
             });
         }
 
@@ -489,7 +412,6 @@
             linePreviewCells.forEach(idx => {
                 const c = grid.children[idx];
                 c.style.opacity = '';
-                c.classList.remove('preview-active');
             });
             linePreviewCells = [];
         }
@@ -531,14 +453,14 @@
                 document.querySelectorAll('.color-btn').forEach(b=>b.classList.remove('active'));
                 this.classList.add('active');
                 color = this.dataset.c;
-                if(['pipette','line','rect','circle'].includes(currentTool)) setTool('draw');
+                if(currentTool === 'pipette' || currentTool === 'line') setTool('draw');
                 updatePreviews();
             }
         });
 
         document.getElementById('colorPicker').addEventListener('input', (e) => {
             color = e.target.value;
-            if(['pipette','line','rect','circle'].includes(currentTool)) setTool('draw');
+            if(currentTool === 'pipette' || currentTool === 'line') setTool('draw');
             updatePreviews();
         });
 
@@ -583,8 +505,6 @@
         document.getElementById('btn-eraser').onclick = () => setTool('eraser');
         document.getElementById('btn-pipette').onclick = () => setTool('pipette');
         document.getElementById('btn-line').onclick = () => setTool('line');
-        document.getElementById('btn-rect').onclick = () => setTool('rect');
-        document.getElementById('btn-circle').onclick = () => setTool('circle');
 
         function setTool(tool) {
             currentTool = tool;
@@ -593,8 +513,6 @@
             document.getElementById('btn-eraser').classList.toggle('active', tool==='eraser');
             document.getElementById('btn-pipette').classList.toggle('active', tool==='pipette');
             document.getElementById('btn-line').classList.toggle('active', tool==='line');
-            document.getElementById('btn-rect').classList.toggle('active', tool==='rect');
-            document.getElementById('btn-circle').classList.toggle('active', tool==='circle');
             
             if(tool !== 'draw') document.querySelectorAll('.shape-panel .btn-icon').forEach(b=>b.classList.remove('active'));
             else {
@@ -689,25 +607,39 @@
             const ctx = canvas.getContext('2d');
             canvas.width = cols * (cellSize + gap) - gap;
             canvas.height = rows * (cellSize + gap) - gap;
+            
+            // Фон
             ctx.fillStyle = '#E0F7FA';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Малюємо кожну клітинку
             grid.children.forEach((cell, i) => {
                 const col = i % cols, row = Math.floor(i / cols);
                 const x = col * (cellSize + gap), y = row * (cellSize + gap);
+                
                 if(cell.classList.contains('square')) {
                     ctx.fillStyle = cell.style.background || '#E0F7FA';
                     ctx.fillRect(x, y, cellSize, cellSize);
                 } else if(cell.classList.contains('circle')) {
                     ctx.fillStyle = cell.style.background || '#E0F7FA';
-                    ctx.beginPath(); ctx.arc(x + cellSize/2, y + cellSize/2, cellSize/2, 0, Math.PI*2); ctx.fill();
+                    ctx.beginPath();
+                    ctx.arc(x + cellSize/2, y + cellSize/2, cellSize/2, 0, Math.PI*2);
+                    ctx.fill();
                 } else if(cell.classList.contains('triangle')) {
                     ctx.fillStyle = cell.style.borderBottomColor || '#E0F7FA';
-                    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + cellSize, y); ctx.lineTo(x + cellSize/2, y + cellSize); ctx.closePath(); ctx.fill();
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x + cellSize, y);
+                    ctx.lineTo(x + cellSize/2, y + cellSize);
+                    ctx.closePath();
+                    ctx.fill();
                 }
             });
+            
+            // Завантаження
             const link = document.createElement('a');
-            link.download = 'BlockBuilder.png';
-            link.href = canvas.toDataURL();
+            link.download = 'BlockBuilder_Ultimate.png';
+            link.href = canvas.toDataURL('image/png');
             link.click();
         }
 
@@ -720,7 +652,11 @@
 
         function clearGrid(){
             if(confirm('Очистити все поле?')){
-                grid.children.forEach(c => { c.className = 'cell square'; c.style.background = ''; c.style.borderBottom = ''; });
+                grid.children.forEach(c => { 
+                    c.className = 'cell square'; 
+                    c.style.background = ''; 
+                    c.style.borderBottom = ''; 
+                });
                 saveState();
             }
         }
